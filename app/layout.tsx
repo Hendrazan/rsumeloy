@@ -10,6 +10,7 @@ import React, { useEffect } from "react";
 import Script from "next/script";
 import { cookies } from 'next/headers';
 import AnalyticsInitializer from "../components/AnalyticsInitializer";
+import StructuredData from '@/components/StructuredData';
 
 // Enable web vitals reporting
 export function reportWebVitals(metric: NextWebVitalsMetric) {
@@ -114,6 +115,7 @@ export default function RootLayout({
         "min-h-screen bg-background font-sans antialiased",
         poppins.variable
       )}>
+  <StructuredData />
         {/* <Script src="/analytics.js" strategy="afterInteractive" /> */}
         {/* <Script id="analytics-setup" strategy="afterInteractive">
           {`

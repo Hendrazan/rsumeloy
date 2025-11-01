@@ -4,6 +4,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import AIWidget from '@/components/layout/AIWidget';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import StructuredData from '@/components/StructuredData';
 
 export default function PublicLayout({
   children,
@@ -11,7 +12,8 @@ export default function PublicLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="flex min-h-screen flex-col">
+  <div className="flex min-h-screen flex-col">
+    <StructuredData />
         <Header />
         <div className="container mx-auto px-4">
           <Breadcrumbs className="py-0" />
