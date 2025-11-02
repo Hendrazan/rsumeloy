@@ -1,6 +1,4 @@
 'use client';
-
-import { useEffect } from 'react';
 import PageHeader from '@/components/layout/PageHeader';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
@@ -49,48 +47,10 @@ export default function LayananSangattaPage() {
   const content = pageContent[language] || pageContent.id;
 
   // Add LocalBusiness schema for Sangatta location
-  useEffect(() => {
-    const locationSchema = {
-      "@context": "https://schema.org",
-      "@type": "MedicalOrganization",
-      "@id": "https://rsumeloy.com/kontak/lokasi-sangatta#organization",
-      name: "RSU Meloy",
-      url: "https://rsumeloy.com/kontak/lokasi-sangatta",
-      logo: "https://res.cloudinary.com/ddyqhlilj/image/upload/logo_rsmeloy_web",
-      address: {
-        "@type": "PostalAddress",
-        streetAddress: hospitalInfo.address.street,
-        addressLocality: hospitalInfo.address.district,
-        addressRegion: hospitalInfo.address.province,
-        postalCode: hospitalInfo.address.postalCode,
-        addressCountry: "ID"
-      },
-      geo: {
-        "@type": "GeoCoordinates",
-        latitude: hospitalInfo.googleMaps.latitude,
-        longitude: hospitalInfo.googleMaps.longitude
-      },
-      telephone: hospitalInfo.contact.phone,
-      medicalSpecialty: hospitalInfo.specialists,
-      availableService: hospitalInfo.facilities,
-      openingHoursSpecification: hospitalInfo.businessHours.map(hours => ({
-        "@type": "OpeningHoursSpecification",
-        dayOfWeek: hours.days,
-        opens: hours.hours.split(" - ")[0],
-        closes: hours.hours.split(" - ")[1] || "24:00",
-        description: hours.note
-      }))
-    };
-
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.text = JSON.stringify(locationSchema);
-    document.head.appendChild(script);
-
-    return () => {
-      document.head.removeChild(script);
-    };
-  }, []);
+  // NOTE: Structured data for locations should be emitted server-side via
+  // `StructuredData` in the page component. This client component previously
+  // injected a JSON-LD <script> into the head; remove that to avoid duplicate
+  // JSON-LD when server-side StructuredData is present.
 
   return (
     <div className="min-h-screen">
