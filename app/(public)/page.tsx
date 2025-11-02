@@ -2,9 +2,25 @@
 import dynamic from 'next/dynamic';
 import { getServices, getPartners, getInfo, getFacilities } from "../../lib/data";
 import type { Service, Partner, Info, Facility } from "../../types";
+import type { Metadata } from 'next';
 
-// Dynamically import the client component with no SSR to avoid client-reference-manifest issues
-const HomePageClient = dynamic(() => import("./HomePageClient"), { ssr: false });
+// Enable SSR for better SEO - content needs to be crawlable
+const HomePageClient = dynamic(() => import("./HomePageClient"), { ssr: true });
+
+export const metadata: Metadata = {
+  title: "RSU Meloy - Rumah Sakit Unggulan di Sangatta Utara, Kalimantan Timur",
+  description: "RSU Meloy adalah rumah sakit terpercaya di Sangatta Utara dengan layanan medis 24 jam, dokter spesialis berpengalaman, fasilitas modern, dan komitmen pelayanan kesehatan terbaik untuk masyarakat Kalimantan Timur.",
+  keywords: ["rumah sakit sangatta", "RSU Meloy", "rumah sakit kalimantan timur", "UGD 24 jam", "dokter spesialis", "rawat inap", "medical checkup", "layanan kesehatan sangatta"],
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    title: "RSU Meloy - Rumah Sakit Unggulan di Sangatta Utara",
+    description: "Layanan kesehatan profesional dengan dokter spesialis, fasilitas modern, dan UGD 24 jam. Dipercaya masyarakat Sangatta dan Kalimantan Timur.",
+    url: '/',
+    type: 'website',
+  },
+};
 
 export default async function HomePage() {
   // Implement safe data fetching with fallbacks

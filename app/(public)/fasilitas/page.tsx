@@ -16,6 +16,14 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: `${t('fasilitasTitle')} | RSU Meloy`,
     description: t('fasilitasSubtitle'),
+    alternates: {
+      canonical: '/fasilitas',
+    },
+    openGraph: {
+      title: t('fasilitasTitle'),
+      description: t('fasilitasSubtitle'),
+      url: '/fasilitas',
+    },
   };
 }
 

@@ -69,7 +69,6 @@ export const metadata: Metadata = {
     google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
   },
   alternates: {
-    canonical: '/',
     languages: {
       'id-ID': '/id',
       'en-US': '/en',
@@ -106,6 +105,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="id">
+      <head>
+        {/* Preconnect untuk faster loading */}
+        <link rel="preconnect" href="https://res.cloudinary.com" />
+        <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        
+        {/* Mobile optimization */}
+        <meta name="theme-color" content="#006d77" />
+        <meta name="format-detection" content="telephone=yes" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+      </head>
       <body className={cn(
         "min-h-screen bg-background font-sans antialiased",
         poppins.variable

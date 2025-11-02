@@ -8,12 +8,13 @@ export default function StructuredData({ extra, includeOrg = true }: { extra?: J
 
   const organizationLd = {
     '@context': 'https://schema.org',
-    '@type': 'Hospital',
+    '@type': ['Hospital', 'MedicalOrganization', 'LocalBusiness'],
     name: hospitalInfo.name,
     alternateName: hospitalInfo.shortName,
     description: hospitalInfo.description,
     url: siteUrl,
     logo: `${siteUrl}/favicon.ico`,
+    image: 'https://res.cloudinary.com/ddyqhlilj/image/upload/gedungrsmeloymalam',
     telephone: hospitalInfo.contact?.phone,
     email: hospitalInfo.contact?.email,
     address: {
@@ -30,6 +31,46 @@ export default function StructuredData({ extra, includeOrg = true }: { extra?: J
       longitude: hospitalInfo.googleMaps?.longitude,
     },
     sameAs: Object.values(hospitalInfo.socialMedia || {}),
+    // Enhanced Medical Organization properties
+    priceRange: '$$',
+    currenciesAccepted: 'IDR',
+    paymentAccepted: ['Cash', 'Credit Card', 'Debit Card', 'BPJS', 'Asuransi'],
+    availableService: [
+      { '@type': 'MedicalProcedure', name: 'Unit Gawat Darurat (UGD) 24 Jam' },
+      { '@type': 'MedicalProcedure', name: 'Rawat Inap' },
+      { '@type': 'MedicalProcedure', name: 'Rawat Jalan' },
+      { '@type': 'MedicalProcedure', name: 'Laboratorium' },
+      { '@type': 'MedicalProcedure', name: 'Radiologi' },
+      { '@type': 'MedicalProcedure', name: 'Farmasi' },
+    ],
+    medicalSpecialty: [
+      'Penyakit Dalam',
+      'Bedah',
+      'Kebidanan dan Kandungan',
+      'Anak',
+      'Jantung',
+      'Saraf',
+      'Mata',
+      'THT',
+      'Kulit dan Kelamin',
+      'Ortopedi',
+    ],
+    openingHoursSpecification: [
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+        opens: '00:00',
+        closes: '23:59',
+        description: 'UGD 24 Jam'
+      },
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+        opens: '08:00',
+        closes: '20:00',
+        description: 'Poliklinik'
+      }
+    ],
   } as JsonLd;
 
   const extraItems = extra ? (Array.isArray(extra) ? extra : [extra]) : [];

@@ -1,0 +1,78 @@
+import { createClient } from '@/lib/supabase/server';
+
+export async function GET() {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://rsumeloy.com';
+  const supabase = createClient();
+
+  // Fetch all data with images
+  const { data: services } = await supabase.from('services').select('slug, name, image_public_id_1, image_public_id_2, image_public_id_3');
+  const { data: facilities } = await supabase.from('facilities').select('slug, name, image_public_id_1, image_public_id_2, image_public_id_3');
+  const { data: articles } = await supabase.from('articles').select('slug, title, image_public_id');
+  const { data: info } = await supabase.from('info').select('id, title, image_public_id');
+
+  const cloudinaryBase = 'https://res.cloudinary.com/ddyqhlilj/image/upload';
+
+  const imageEntries: Array<{url: string, images: Array<{loc: string, title: string}>}> = [];
+
+  // Services images
+  services?.forEach(service => {
+    const images = [];
+    if (service.image_public_id_1) images.push({ loc: `${cloudinaryBase}/${service.image_public_id_1}`, title: `${service.name} - Gambar 1` });
+    if (service.image_public_id_2) images.push({ loc: `${cloudinaryBase}/${service.image_public_id_2}`, title: `${service.name} - Gambar 2` });
+    if (service.image_public_id_3) images.push({ loc: `${cloudinaryBase}/${service.image_public_id_3}`, title: `${service.name} - Gambar 3` });
+    if (images.length > 0) {
+      imageEntries.push({ url: `${siteUrl}/layanan/${service.slug}`, images });
+    }
+  });
+
+  // Facilities images
+  facilities?.forEach(facility => {
+    const images = [];
+    if (facility.image_public_id_1) images.push({ loc: `${cloudinaryBase}/${facility.image_public_id_1}`, title: `${facility.name} - Gambar 1` });
+    if (facility.image_public_id_2) images.push({ loc: `${cloudinaryBase}/${facility.image_public_id_2}`, title: `${facility.name} - Gambar 2` });
+    if (facility.image_public_id_3) images.push({ loc: `${cloudinaryBase}/${facility.image_public_id_3}`, title: `${facility.name} - Gambar 3` });
+    if (images.length > 0) {
+      imageEntries.push({ url: `${siteUrl}/fasilitas/${facility.slug}`, images });
+    }
+  });
+
+  // Articles images
+  articles?.forEach(article => {
+    if (article.image_public_id) {
+      imageEntries.push({
+        url: `${siteUrl}/tentang/artikel/${article.slug}`,
+        images: [{ loc: `${cloudinaryBase}/${article.image_public_id}`, title: article.title }]
+      });
+    }
+  });
+
+  // Info images
+  info?.forEach(item => {
+    if (item.image_public_id) {
+      imageEntries.push({
+        url: `${siteUrl}/info/${item.id}`,
+        images: [{ loc: `${cloudinaryBase}/${item.image_public_id}`, title: item.title }]
+      });
+    }
+  });
+
+  // Generate XML
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+${imageEntries.map(entry => `  <url>
+    <loc>${entry.url}</loc>
+${entry.images.map(img => `    <image:image>
+      <image:loc>${img.loc}</image:loc>
+      <image:title>${img.title}</image:title>
+    </image:image>`).join('\n')}
+  </url>`).join('\n')}
+</urlset>`;
+
+  return new Response(xml, {
+    headers: {
+      'Content-Type': 'application/xml',
+      'Cache-Control': 'public, max-age=3600, s-maxage=3600',
+    },
+  });
+}
