@@ -2,7 +2,7 @@
 
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import DOMPurify from 'dompurify';
+// DOMPurify removed: using simple stripHtml for server-safe plain text extraction
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -13,11 +13,23 @@ export const truncateText = (text: string, maxLength: number): string => {
     return text.substring(0, maxLength).trim() + '...';
 };
 
-export const formatDate = (dateValue?: any): string => {
+export type MaybeTimestamp = string | number | Date | { toDate: () => Date } | undefined;
+
+function isTimestampLike(v: unknown): v is { toDate: () => Date } {
+    return !!v && typeof (v as any).toDate === 'function';
+}
+
+export const formatDate = (dateValue?: MaybeTimestamp): string => {
     if (!dateValue) return 'Invalid Date';
     try {
-        // Cek apakah objek memiliki metode .toDate(), khas untuk Firebase Timestamps
-        const date = dateValue.toDate ? dateValue.toDate() : new Date(dateValue);
+        let date: Date;
+        // Cek apakah objek memiliki metode .toDate(), khas untuk Firebase/Firebase-like Timestamps
+        if (isTimestampLike(dateValue)) {
+            date = dateValue.toDate();
+        } else {
+            date = new Date(dateValue as string | number | Date);
+        }
+
         if (isNaN(date.getTime())) {
             return 'Invalid Date';
         }
@@ -50,18 +62,5 @@ export const getPlainText = (html: string): string => {
     if (!html) return '';
     
     // Use stripHtml for both server and client side
-    return stripHtml(html);
-
-    // Fallback to DOM manipulation only on client side if needed
-    if (typeof window !== 'undefined') {
-        try {
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = DOMPurify.sanitize(html);
-            return tempDiv.textContent || tempDiv.innerText || '';
-        } catch (e) {
-            console.error('Error converting HTML to plain text:', e);
-        }
-    }
-    
     return stripHtml(html);
 };

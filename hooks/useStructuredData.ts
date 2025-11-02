@@ -65,7 +65,9 @@ export function useOrganizationSchema() {
   }, []);
 }
 
-export function useDoctorSchema(doctor: any) {
+import type { Doctor, Article } from "../types/models";
+
+export function useDoctorSchema(doctor: Doctor | null | undefined) {
   useEffect(() => {
     if (!doctor) return;
     
@@ -89,7 +91,7 @@ export function useDoctorSchema(doctor: any) {
   }, [doctor]);
 }
 
-export function useArticleSchema(article: any) {
+export function useArticleSchema(article: Article | null | undefined) {
   useEffect(() => {
     if (!article) return;
     

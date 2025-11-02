@@ -217,4 +217,4 @@ export function setupGlobalErrorHandler() {
   }
 
   return ErrorBoundary;
-};
+}

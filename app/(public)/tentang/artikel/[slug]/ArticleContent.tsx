@@ -1,40 +1,24 @@
 'use client';
 
-import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
 import PageHeader from "../../../../../components/layout/PageHeader";
 import { Button } from '../../../../../components/ui/Button';
 import { ArrowLeft, Calendar, User } from 'lucide-react';
-import { formatDate, getPlainText, truncateText } from '../../../../../lib/utils';
+import { formatDate } from '../../../../../lib/utils';
 import Link from 'next/link';
 import ClientSideContent from "../../../../../components/ClientSideContent";
-import { useArticleSchema } from '@/hooks/useArticleSchema';
 import React from 'react';
-
-function ArticleSchemaWrapper({ article, url }: { article: any, url: string }) {
-    useArticleSchema({
-        title: article.title,
-        description: truncateText(getPlainText(article.content), 160),
-        date: article.created_at,
-        author: article.author,
-        image: `https://res.cloudinary.com/ddyqhlilj/image/upload/${article.image_public_id}`,
-        url: url
-    });
-    return null;
-}
+import type { Article } from '../../../../../types/models';
 
 interface ArticleContentProps {
-    article: any;
-    url: string;
+    article: Article;
 }
 
-export default function ArticleContent({ article, url }: ArticleContentProps) {
+export default function ArticleContent({ article }: ArticleContentProps) {
     return (
         <div className="animate-fade-in">
-            <ArticleSchemaWrapper article={article} url={url} />
             <PageHeader
                 title={article.title}
-                imagePublicId={article.image_public_id}
+                imagePublicId={article.image_public_id || ''}
             />
             <div className="py-16 md:py-24">
                 <div className="container mx-auto px-4 md:px-6">

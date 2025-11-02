@@ -5,7 +5,6 @@ import React, { useState, useMemo, useRef } from 'react';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 import { useLanguage } from '../../../../hooks/useContextHooks';
-import { useDoctorSchema } from '../../../../hooks/useStructuredData';
 import { Card, CardHeader, CardContent } from '../../../../components/ui/Card';
 import { Button } from '../../../../components/ui/Button';
 import { Avatar, AvatarImage, AvatarFallback } from '../../../../components/ui/Avatar';
@@ -14,8 +13,7 @@ import { FileDown, Loader2, X } from '../../../../components/icons';
 import { Doctor } from '../../../../types';
 import { getOptimizedUrl } from '../../../../lib/cloudinary';
 import { PrintableSchedule } from './PrintableSchedule';
-import { formatDate } from '../../../../lib/utils';
-import ClientSideContent from '../../../../components/ClientSideContent';
+// formatDate and ClientSideContent not used in this component
 
 interface DoctorsPageClientProps {
     doctors: Doctor[];
@@ -29,8 +27,7 @@ const DoctorsPageClient: React.FC<DoctorsPageClientProps> = ({ doctors }) => {
     const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(null);
     const printableRef = useRef<HTMLDivElement>(null);
 
-    // Inject structured data for selected doctor
-    useDoctorSchema(selectedDoctor);
+    // Structured data injected server-side; client-side injection removed to avoid duplication
 
     const specialties = useMemo(() => ['Semua', ...Array.from(new Set(doctors.map(d => d.specialty)))], [doctors]);
     
@@ -150,6 +147,7 @@ const DoctorsPageClient: React.FC<DoctorsPageClientProps> = ({ doctors }) => {
                         className="flex-grow rounded-md border border-input bg-background px-4 py-2 text-base"
                     />
                     <select
+                        aria-label={t('pilihSpesialisasi')}
                         value={selectedSpecialty}
                         onChange={(e) => setSelectedSpecialty(e.target.value)}
                         className="rounded-md border border-input bg-background px-4 py-2 text-base"
@@ -205,9 +203,9 @@ const DoctorsPageClient: React.FC<DoctorsPageClientProps> = ({ doctors }) => {
                         <p className="md:col-span-3 text-center text-muted-foreground">{t('dokterTidakDitemukan')}</p>
                     )}
                 </div>
-                <div style={{ display: 'none', position: 'absolute', left: '-9999px' }}>
-                     <PrintableSchedule doctors={filteredDoctors} forwardedRef={printableRef} />
-                </div>
+             <div className="sr-only">
+                 <PrintableSchedule doctors={filteredDoctors} forwardedRef={printableRef} />
+             </div>
 
                 <div className="mt-12 pt-8 border-t">
                     <div className="prose max-w-none">

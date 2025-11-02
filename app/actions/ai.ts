@@ -3,6 +3,7 @@
 
 import { GoogleGenAI } from "@google/genai";
 import { getAIAssistantConfig, getDoctors } from "../../lib/data";
+import type { Doctor } from "../../types/models";
 
 const API_KEY = process.env.GEMINI_API_KEY;
 
@@ -39,11 +40,11 @@ export const getAIResponseAction = async (prompt: string): Promise<string> => {
     
     const basePrompt = configData?.[0]?.base_prompt || DEFAULT_SYSTEM_INSTRUCTION;
     
-    const doctorSchedules = doctorsData.map(doc => {
-        const scheduleInfo = doc.status === 'Praktek' ? doc.schedule : `Status: ${doc.status} (${doc.status_info || 'Tidak ada info'})`;
-        const noteInfo = doc.notes ? ` | Catatan: ${doc.notes}` : '';
-        return `- ${doc.name} (${doc.specialty}): ${scheduleInfo}${noteInfo}`;
-    }).join('\n');
+  const doctorSchedules = doctorsData.map((doc: Doctor) => {
+    const scheduleInfo = doc.status === 'Praktek' ? doc.schedule : `Status: ${doc.status} (${doc.status_info || 'Tidak ada info'})`;
+    const noteInfo = doc.notes ? ` | Catatan: ${doc.notes}` : '';
+    return `- ${doc.name} (${doc.specialty}): ${scheduleInfo}${noteInfo}`;
+  }).join('\n');
 
     const finalSystemInstruction = `${basePrompt}\n\n--- DATA REAL-TIME ---\n**Jadwal Dokter Terkini:**\n${doctorSchedules}\n\n**Instruksi Tambahan:**\n- Anda memiliki akses ke jadwal dokter terkini. Gunakan informasi ini untuk menjawab pertanyaan terkait jadwal.\n- Selalu berikan disclaimer di akhir setiap respons.`;
     

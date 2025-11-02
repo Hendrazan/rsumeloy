@@ -1,5 +1,6 @@
 
 import { getFacilities } from "../../../lib/data";
+import type { Facility } from "../../../types/models";
 import { translations } from "../../../lib/translations";
 import { Metadata } from 'next';
 import Link from 'next/link';
@@ -31,7 +32,7 @@ export default async function FacilitiesPage() {
             <div className="py-16 md:py-24">
                 <div className="container mx-auto px-4 md:px-6">
                     <div className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
-                        {facilities.map(facility => {
+                        {facilities.map((facility: Facility) => {
                             const facilityImages = [facility.image_public_id_1, facility.image_public_id_2, facility.image_public_id_3].filter(Boolean) as string[];
                             return (
                                 <Card key={facility.id} className="overflow-hidden flex flex-col transition-shadow hover:shadow-xl group break-inside-avoid">

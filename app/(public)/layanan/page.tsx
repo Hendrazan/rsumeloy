@@ -1,5 +1,6 @@
 
 import { getServices } from "../../../lib/data";
+import type { Service } from "../../../types/models";
 import { translations } from "../../../lib/translations";
 import { Metadata } from 'next';
 import Link from 'next/link';
@@ -52,7 +53,7 @@ export default async function ServicesPage() {
             <div className="py-16 md:py-24">
                 <div className="container mx-auto px-4 md:px-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {services.map(service => {
+                        {services.map((service: Service) => {
                             const serviceImages = [service.image_public_id_1, service.image_public_id_2, service.image_public_id_3].filter(Boolean) as string[];
                             return (
                                 <Card key={service.id} className="overflow-hidden flex flex-col transition-shadow hover:shadow-xl group">

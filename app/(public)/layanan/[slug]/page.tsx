@@ -1,5 +1,6 @@
 
 import { getServiceBySlug, getServices } from "../../../../lib/data";
+import type { Service } from "../../../../types/models";
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import PageHeader from "../../../../components/layout/PageHeader";
@@ -12,7 +13,7 @@ import ClientSideContent from "../../../../components/ClientSideContent";
 // Function to generate static paths
 export async function generateStaticParams() {
     const services = await getServices();
-    return services.map(service => ({
+    return services.map((service: Service) => ({
         slug: service.slug,
     }));
 }
@@ -64,7 +65,7 @@ const truncateText = (text: string, maxLength: number): string => {
 };
 
 
-const generateServiceJsonLd = (service: any) => {
+const generateServiceJsonLd = (service: Service) => {
   return {
     '@context': 'https://schema.org',
     '@type': 'MedicalService',

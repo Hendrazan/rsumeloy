@@ -1,5 +1,6 @@
 
 import { getInfoItemById, getInfo } from "../../../../lib/data";
+import type { InfoItem } from "../../../../types/models";
 import { fallbackInfoItems } from "../../../../data/fallbackData";
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -11,12 +12,12 @@ import { formatDate, truncateText } from '../../../../lib/utils';
 
 export async function generateStaticParams() {
     if (process.env.VERCEL_ENV === 'production' && process.env.NEXT_PHASE === 'build') {
-        return fallbackInfoItems.map(item => ({
+    return fallbackInfoItems.map((item: InfoItem) => ({
             id: item.id,
         }));
     }
     const infoItems = await getInfo();
-    return infoItems.map(item => ({
+    return infoItems.map((item: InfoItem) => ({
         id: item.id,
     }));
 }

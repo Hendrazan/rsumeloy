@@ -1,5 +1,6 @@
 
 import { getFacilityBySlug, getFacilities } from "../../../../lib/data";
+import type { Facility } from "../../../../types/models";
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import PageHeader from "../../../../components/layout/PageHeader";
@@ -11,7 +12,7 @@ import ClientSideContent from "../../../../components/ClientSideContent";
 
 export async function generateStaticParams() {
     const facilities = await getFacilities();
-    return facilities.map(facility => ({
+    return facilities.map((facility: Facility) => ({
         slug: facility.slug,
     }));
 }

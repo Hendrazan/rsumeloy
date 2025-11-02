@@ -6,16 +6,11 @@ import { LanguageProvider } from "../contexts/LanguageContext";
 import { AuthProvider } from "../contexts/AuthContext";
 import { cn } from "../lib/utils";
 import { reportWebVitals as reportWebVitalsToAnalytics } from "@/lib/analytics";
-import React, { useEffect } from "react";
-import Script from "next/script";
-import { cookies } from 'next/headers';
+import React from "react";
 import AnalyticsInitializer from "../components/AnalyticsInitializer";
 import StructuredData from '@/components/StructuredData';
 
-// Enable web vitals reporting
-export function reportWebVitals(metric: NextWebVitalsMetric) {
-  reportWebVitalsToAnalytics(metric);
-}
+// Web vitals reporting is wired to analytics library in lib/analytics if needed.
 
 const poppins = Poppins({
   subsets: ['latin'],

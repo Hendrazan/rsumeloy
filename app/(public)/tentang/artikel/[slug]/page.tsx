@@ -1,13 +1,15 @@
 
 import { getArticleBySlug, getArticles } from "../../../../../lib/data";
+import type { Article } from "../../../../../types/models";
 import { truncateText, getPlainText } from "../../../../../lib/utils";
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import ArticleContent from './ArticleContent';
+import StructuredData from '@/components/StructuredData';
 
 export async function generateStaticParams() {
     const articles = await getArticles();
-    return articles.map(article => ({
+    return articles.map((article: Article) => ({
         slug: article.slug,
     }));
 }
@@ -48,7 +50,31 @@ export default async function ArticleDetailPage({ params }: { params: { slug: st
         notFound();
     }
 
-    const url = `${process.env.NEXT_PUBLIC_SITE_URL}/tentang/artikel/${params.slug}`;
+    // Build Article JSON-LD
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://rsumeloy.com';
+    const articleUrl = `${siteUrl}/tentang/artikel/${params.slug}`;
+    const articleLd = {
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: article.title,
+        description: article.content ? article.content.substring(0, 200) : undefined,
+        image: article.image_public_id ? `https://res.cloudinary.com/ddyqhlilj/image/upload/${article.image_public_id}` : undefined,
+        author: article.author ? { '@type': 'Person', name: article.author } : undefined,
+        publisher: {
+            '@type': 'Organization',
+            name: 'RSU Meloy',
+            logo: { '@type': 'ImageObject', url: `${siteUrl}/favicon.ico` }
+        },
+        mainEntityOfPage: { '@type': 'WebPage', '@id': articleUrl },
+        datePublished: article.created_at ? new Date(article.created_at).toISOString() : undefined,
+        dateModified: (article.updated_at || article.created_at) ? new Date((article.updated_at || article.created_at) as string).toISOString() : undefined,
+        url: articleUrl,
+    };
 
-    return <ArticleContent article={article} url={url} />;
+    return (
+        <>
+            <StructuredData extra={articleLd} />
+            <ArticleContent article={article} />
+        </>
+    );
 }
