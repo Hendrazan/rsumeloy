@@ -58,7 +58,9 @@ export default function StructuredData({ extra, includeOrg = true }: { extra?: J
       return copy;
     });
 
-    return JSON.stringify({ '@context': 'https://schema.org', '@graph': graph });
+  // Include a top-level @type to identify the JSON-LD block as a WebPage containing a graph
+  // This helps some validators that expect a top-level @type on the JSON-LD object.
+  return JSON.stringify({ '@context': 'https://schema.org', '@type': 'WebPage', '@graph': graph });
   })();
 
   return (
