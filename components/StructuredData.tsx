@@ -34,16 +34,25 @@ export default function StructuredData({ extra }: { extra?: JsonLd | JsonLd[] })
 
   const items = [organizationLd].concat(extra ? (Array.isArray(extra) ? extra : [extra]) : []);
 
+  // If there's more than one item, emit a single JSON-LD script using @graph
+  // to reduce duplicated <script> tags and make the payload cleaner for crawlers.
+  const scriptContent = (() => {
+    if (items.length === 1) return JSON.stringify(items[0]);
+
+    // Remove any per-item @context to avoid duplication and place one top-level context
+    const graph = items.map((it) => {
+      if (!it || typeof it !== 'object') return it;
+      const copy = { ...it } as Record<string, any>;
+      delete copy['@context'];
+      return copy;
+    });
+
+    return JSON.stringify({ '@context': 'https://schema.org', '@graph': graph });
+  })();
+
   return (
     <>
-      {items.map((item, i) => (
-        // Server component: render plain script tags for JSON-LD
-        <script
-          key={`ld-${i}`}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(item) }}
-        />
-      ))}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: scriptContent }} />
     </>
   );
 }
