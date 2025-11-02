@@ -176,6 +176,13 @@ export function setupGlobalErrorHandler() {
   if (typeof window === 'undefined') return;
 
   window.addEventListener('error', (event) => {
+    // Filter out noisy extension/content-script errors that we cannot control.
+    const msg = (event.error && (event.error.message || String(event.error))) || event.message || '';
+    if (typeof msg === 'string' && msg.includes('Cannot redefine property: ethereum')) {
+      // Ignore extension-induced ethereum redefine errors
+      return;
+    }
+
     logger.error(event.error || event.message, {
       type: 'window.onerror',
       filename: event.filename,
@@ -185,6 +192,12 @@ export function setupGlobalErrorHandler() {
   });
 
   window.addEventListener('unhandledrejection', (event) => {
+    const reason = event.reason;
+    const reasonMsg = typeof reason === 'string' ? reason : (reason && reason.message) || '';
+    if (typeof reasonMsg === 'string' && reasonMsg.includes('Cannot redefine property: ethereum')) {
+      return;
+    }
+
     logger.error(event.reason || 'Unhandled Promise Rejection', {
       type: 'unhandledrejection',
     });
