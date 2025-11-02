@@ -3,7 +3,7 @@ import hospitalInfo from '@/data/hospitalInfo.json';
 
 type JsonLd = Record<string, any>;
 
-export default function StructuredData({ extra }: { extra?: JsonLd | JsonLd[] }) {
+export default function StructuredData({ extra, includeOrg = true }: { extra?: JsonLd | JsonLd[], includeOrg?: boolean }) {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://rsumeloy.com';
 
   const organizationLd = {
@@ -34,8 +34,8 @@ export default function StructuredData({ extra }: { extra?: JsonLd | JsonLd[] })
 
   const extraItems = extra ? (Array.isArray(extra) ? extra : [extra]) : [];
 
-  // If any extra item already contains an organization-like type, don't include the default organization
-  const hasOrganizationInExtras = extraItems.some((it) => {
+  // Optionally include organization; pages can set includeOrg=false to avoid duplicates
+  const shouldIncludeOrg = includeOrg && !extraItems.some((it) => {
     if (!it || typeof it !== 'object') return false;
     const t = it['@type'];
     if (!t) return false;
@@ -43,7 +43,7 @@ export default function StructuredData({ extra }: { extra?: JsonLd | JsonLd[] })
     return types.some((type: string) => /hospital|organization|medicalorganization|localbusiness/i.test(type));
   });
 
-  const items = (hasOrganizationInExtras ? [] : [organizationLd]).concat(extraItems);
+  const items = (shouldIncludeOrg ? [organizationLd] : []).concat(extraItems);
 
   // If there's more than one item, emit a single JSON-LD script using @graph
   // to reduce duplicated <script> tags and make the payload cleaner for crawlers.

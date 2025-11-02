@@ -57,7 +57,7 @@ export default async function DoctorsPage() {
 
   return (
     <div className="animate-fade-in">
-      <StructuredData extra={[breadcrumbLd, pageLd, ...physiciansLd]} />
+  <StructuredData includeOrg={false} extra={[breadcrumbLd, pageLd, ...physiciansLd]} />
             <PageHeader
                 title={t('jadwalDokterTitle')}
                 subtitle={t('jadwalDokterSubtitle')}

@@ -73,7 +73,7 @@ export default async function ArticleDetailPage({ params }: { params: { slug: st
 
     return (
         <>
-            <StructuredData extra={articleLd} />
+                <StructuredData includeOrg={false} extra={articleLd} />
             <ArticleContent article={article} />
         </>
     );
