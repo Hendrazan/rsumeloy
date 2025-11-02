@@ -32,7 +32,18 @@ export default function StructuredData({ extra }: { extra?: JsonLd | JsonLd[] })
     sameAs: Object.values(hospitalInfo.socialMedia || {}),
   } as JsonLd;
 
-  const items = [organizationLd].concat(extra ? (Array.isArray(extra) ? extra : [extra]) : []);
+  const extraItems = extra ? (Array.isArray(extra) ? extra : [extra]) : [];
+
+  // If any extra item already contains an organization-like type, don't include the default organization
+  const hasOrganizationInExtras = extraItems.some((it) => {
+    if (!it || typeof it !== 'object') return false;
+    const t = it['@type'];
+    if (!t) return false;
+    const types = Array.isArray(t) ? t : [t];
+    return types.some((type: string) => /hospital|organization|medicalorganization|localbusiness/i.test(type));
+  });
+
+  const items = (hasOrganizationInExtras ? [] : [organizationLd]).concat(extraItems);
 
   // If there's more than one item, emit a single JSON-LD script using @graph
   // to reduce duplicated <script> tags and make the payload cleaner for crawlers.
