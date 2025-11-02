@@ -55,12 +55,19 @@
   ],
   "specialists": [
     "Dokter Spesialis Penyakit Dalam",
+    "Dokter Spesialis Jantung",
     "Dokter Spesialis Anak",
     "Dokter Spesialis Bedah",
     "Dokter Spesialis Kandungan",
     "Dokter Spesialis Saraf",
     "Dokter Spesialis THT",
     "Dokter Spesialis Mata",
+    "Dokter Spesialis Gigi",
+    "Dokter Spesialis Paru",
+    "Dokter Spesialis Orthopedi",
+    "Dokter Spesialis Gizi",
+    "Dokter Rehabilitasi Medik",
+    "Dokter Radiologi",
     "Dokter Spesialis Kulit dan Kelamin"
   ],
   "insurance": [
