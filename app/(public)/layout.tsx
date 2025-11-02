@@ -13,7 +13,6 @@ export default function PublicLayout({
 }) {
   return (
   <div className="flex min-h-screen flex-col">
-    <StructuredData />
         <Header />
         <div className="container mx-auto px-4">
           <Breadcrumbs className="py-0" />
