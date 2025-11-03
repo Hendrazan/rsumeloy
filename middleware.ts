@@ -103,6 +103,7 @@ export async function middleware(request: NextRequest) {
       "img-src 'self' https://res.cloudinary.com data: blob:",
       "font-src 'self' https://fonts.gstatic.com",
       "connect-src 'self' https://*.supabase.co https://generativelanguage.googleapis.com",
+      "frame-src 'self' https://www.google.com https://maps.google.com",
       "frame-ancestors 'self'",
       "base-uri 'self'",
       "form-action 'self'"
