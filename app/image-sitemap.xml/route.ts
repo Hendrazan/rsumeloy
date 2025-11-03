@@ -15,7 +15,7 @@ export async function GET() {
   const imageEntries: Array<{url: string, images: Array<{loc: string, title: string}>}> = [];
 
   // Services images
-  services?.forEach(service => {
+  services?.forEach((service: any) => {
     const images = [];
     if (service.image_public_id_1) images.push({ loc: `${cloudinaryBase}/${service.image_public_id_1}`, title: `${service.name} - Gambar 1` });
     if (service.image_public_id_2) images.push({ loc: `${cloudinaryBase}/${service.image_public_id_2}`, title: `${service.name} - Gambar 2` });
@@ -26,7 +26,7 @@ export async function GET() {
   });
 
   // Facilities images
-  facilities?.forEach(facility => {
+  facilities?.forEach((facility: any) => {
     const images = [];
     if (facility.image_public_id_1) images.push({ loc: `${cloudinaryBase}/${facility.image_public_id_1}`, title: `${facility.name} - Gambar 1` });
     if (facility.image_public_id_2) images.push({ loc: `${cloudinaryBase}/${facility.image_public_id_2}`, title: `${facility.name} - Gambar 2` });
@@ -37,7 +37,7 @@ export async function GET() {
   });
 
   // Articles images
-  articles?.forEach(article => {
+  articles?.forEach((article: any) => {
     if (article.image_public_id) {
       imageEntries.push({
         url: `${siteUrl}/tentang/artikel/${article.slug}`,
@@ -47,7 +47,7 @@ export async function GET() {
   });
 
   // Info images
-  info?.forEach(item => {
+  info?.forEach((item: any) => {
     if (item.image_public_id) {
       imageEntries.push({
         url: `${siteUrl}/info/${item.id}`,
