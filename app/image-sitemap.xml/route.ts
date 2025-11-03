@@ -28,10 +28,11 @@ export async function GET() {
   // Services images
   services?.forEach((service: ImageData) => {
     const images = [];
-    if (service.image_public_id_1) images.push({ loc: `${cloudinaryBase}/${service.image_public_id_1}`, title: `${service.name} - Gambar 1` });
-    if (service.image_public_id_2) images.push({ loc: `${cloudinaryBase}/${service.image_public_id_2}`, title: `${service.name} - Gambar 2` });
-    if (service.image_public_id_3) images.push({ loc: `${cloudinaryBase}/${service.image_public_id_3}`, title: `${service.name} - Gambar 3` });
-    if (images.length > 0) {
+    const serviceName = service.name || 'Service';
+    if (service.image_public_id_1) images.push({ loc: `${cloudinaryBase}/${service.image_public_id_1}`, title: `${serviceName} - Gambar 1` });
+    if (service.image_public_id_2) images.push({ loc: `${cloudinaryBase}/${service.image_public_id_2}`, title: `${serviceName} - Gambar 2` });
+    if (service.image_public_id_3) images.push({ loc: `${cloudinaryBase}/${service.image_public_id_3}`, title: `${serviceName} - Gambar 3` });
+    if (images.length > 0 && service.slug) {
       imageEntries.push({ url: `${siteUrl}/layanan/${service.slug}`, images });
     }
   });
@@ -39,30 +40,33 @@ export async function GET() {
   // Facilities images
   facilities?.forEach((facility: ImageData) => {
     const images = [];
-    if (facility.image_public_id_1) images.push({ loc: `${cloudinaryBase}/${facility.image_public_id_1}`, title: `${facility.name} - Gambar 1` });
-    if (facility.image_public_id_2) images.push({ loc: `${cloudinaryBase}/${facility.image_public_id_2}`, title: `${facility.name} - Gambar 2` });
-    if (facility.image_public_id_3) images.push({ loc: `${cloudinaryBase}/${facility.image_public_id_3}`, title: `${facility.name} - Gambar 3` });
-    if (images.length > 0) {
+    const facilityName = facility.name || 'Facility';
+    if (facility.image_public_id_1) images.push({ loc: `${cloudinaryBase}/${facility.image_public_id_1}`, title: `${facilityName} - Gambar 1` });
+    if (facility.image_public_id_2) images.push({ loc: `${cloudinaryBase}/${facility.image_public_id_2}`, title: `${facilityName} - Gambar 2` });
+    if (facility.image_public_id_3) images.push({ loc: `${cloudinaryBase}/${facility.image_public_id_3}`, title: `${facilityName} - Gambar 3` });
+    if (images.length > 0 && facility.slug) {
       imageEntries.push({ url: `${siteUrl}/fasilitas/${facility.slug}`, images });
     }
   });
 
   // Articles images
   articles?.forEach((article: ImageData) => {
-    if (article.image_public_id) {
+    if (article.image_public_id && article.slug && article.title) {
+      const articleTitle = article.title;
       imageEntries.push({
         url: `${siteUrl}/tentang/artikel/${article.slug}`,
-        images: [{ loc: `${cloudinaryBase}/${article.image_public_id}`, title: article.title }]
+        images: [{ loc: `${cloudinaryBase}/${article.image_public_id}`, title: articleTitle }]
       });
     }
   });
 
   // Info images
   info?.forEach((item: ImageData) => {
-    if (item.image_public_id) {
+    if (item.image_public_id && item.id && item.title) {
+      const infoTitle = item.title;
       imageEntries.push({
         url: `${siteUrl}/info/${item.id}`,
-        images: [{ loc: `${cloudinaryBase}/${item.image_public_id}`, title: item.title }]
+        images: [{ loc: `${cloudinaryBase}/${item.image_public_id}`, title: infoTitle }]
       });
     }
   });
