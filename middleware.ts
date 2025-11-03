@@ -35,6 +35,18 @@ export async function middleware(request: NextRequest) {
     'X-Content-Type-Options': 'nosniff',
     'Referrer-Policy': 'origin-when-cross-origin',
     'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
+    // Content Security Policy (CSP) for XSS protection
+    'Content-Security-Policy': [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://res.cloudinary.com",
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+      "img-src 'self' https://res.cloudinary.com data: blob:",
+      "font-src 'self' https://fonts.gstatic.com",
+      "connect-src 'self' https://*.supabase.co https://generativelanguage.googleapis.com",
+      "frame-ancestors 'self'",
+      "base-uri 'self'",
+      "form-action 'self'"
+    ].join('; ')
   };
 
   Object.entries(securityHeaders).forEach(([key, value]) => {

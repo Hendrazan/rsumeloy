@@ -24,12 +24,10 @@ function safeParse(jsonStr) {
   try {
     return JSON.parse(jsonStr);
   } catch (e) {
-    // Some pages include multiple JSON objects concatenated; try to recover by wrapping in array
-    try {
-      return eval('(' + jsonStr + ')');
-    } catch (e2) {
-      return { __parseError: e.message };
-    }
+    // SECURITY FIX: Removed eval() - it's a critical security vulnerability
+    // If JSON.parse fails, the data is malformed and should not be parsed
+    console.warn('Failed to parse JSON-LD:', e.message);
+    return { __parseError: e.message };
   }
 }
 
