@@ -1,22 +1,26 @@
-const { createServer } = require('http');
-const { parse } = require('url');
-const next = require('next');
+// RSU Meloy Production Server - Standalone Build
+// Wrapper untuk menjalankan Next.js standalone server
 
-// Tentukan apakah lingkungan ini adalah 'production' atau bukan
-const dev = process.env.NODE_ENV !== 'production';
-const app = next({ dev });
-const handle = app.getRequestHandler();
+const path = require('path');
 
-// Ambil PORT dari environment hosting, atau gunakan 3000 jika tidak ada
+// Load environment variables
+require('dotenv').config({ path: path.join(__dirname, '.env.local') });
+
+// Set NODE_ENV to production
+process.env.NODE_ENV = 'production';
+
+// Get port from environment or use 3000
 const port = process.env.PORT || 3000;
 
-app.prepare().then(() => {
-  createServer((req, res) => {
-    // Biarkan Next.js yang menangani semua request yang masuk
-    const parsedUrl = parse(req.url, true);
-    handle(req, res, parsedUrl);
-  }).listen(port, (err) => {
-    if (err) throw err;
-    console.log(`> Ready on http://localhost:${port}`);
-  });
-});
+console.log('================================================');
+console.log('   RSU Meloy Production Server');
+console.log('================================================');
+console.log(`Environment: ${process.env.NODE_ENV}`);
+console.log(`Port: ${port}`);
+console.log(`Starting server...`);
+console.log('================================================\n');
+
+// Import and start the standalone server
+require('./standalone/server.js');
+
+console.log(`\n✅ Server ready on http://localhost:${port}`);
