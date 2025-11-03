@@ -1,0 +1,25 @@
+# File dan folder yang tidak perlu diupload
+
+# Environment files dengan kredensial
+.env
+.env.local
+.env.production
+.env.development
+
+# Node modules (akan di-install via npm di server)
+node_modules/
+
+# Build cache (tidak perlu)
+.next/cache/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
