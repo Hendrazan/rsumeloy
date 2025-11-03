@@ -6,17 +6,26 @@ import { createServerClient } from '@supabase/ssr';
 export async function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
   
+  // Whitelist legitimate admin routes sebelum check suspicious patterns
+  const legitimateRoutes = [
+    '/admin/login',
+    '/admin',
+    '/login',
+  ];
+  
+  const isLegitimateRoute = legitimateRoutes.some(route => pathname.startsWith(route));
+  
   // Daftar suspicious patterns untuk SEO spam/phishing
   const suspiciousPatterns = [
-    /\b(login|slot|judi|togel|poker|casino|bet|gambling|cuan|gacor|maxwin)\b/i,
+    /\b(slot|judi|togel|poker|casino|bet|gambling|cuan|gacor|maxwin)\b/i,
     /\b(dansa|porno|xxx|sex|adult)\b/i,
     /\b(obat|viagra|cialis|pharmacy)\b/i,
     /\b(fake|scam|phishing)\b/i,
   ];
   
-  // Check untuk suspicious URL patterns
+  // Check untuk suspicious URL patterns (skip jika legitimate route)
   const fullPath = pathname + search;
-  const matchedPattern = suspiciousPatterns.find(pattern => pattern.test(fullPath));
+  const matchedPattern = !isLegitimateRoute && suspiciousPatterns.find(pattern => pattern.test(fullPath));
   
   if (matchedPattern) {
     const ipAddress = request.ip || request.headers.get('x-forwarded-for') || 'unknown';
