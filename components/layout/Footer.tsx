@@ -53,7 +53,7 @@ const Footer: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                     <div className="md:col-span-1 space-y-4">
                         <div className="flex items-center gap-3">
-                            <Link href="/login" className="cursor-pointer group" aria-label="Admin Login">
+                            <Link href="/admin/login" className="cursor-pointer group" aria-label="Admin Login">
                                 <div className="bg-white p-1 rounded-full group-hover:bg-gray-200 transition-colors">
                                     <OptimizedImage publicId="logo_rsmeloy_web" alt="Logo RSU Meloy" width="32" height="32" className="object-contain" />
                                 </div>

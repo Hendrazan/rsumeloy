@@ -11,7 +11,6 @@ export default function robots(): MetadataRoute.Robots {
         allow: '/',
         disallow: [
           '/admin/',
-          '/login/',
           // Note: previously blocked all URLs with query parameters. Relaxed to allow
           // query-parametered pages to be crawled (useful for search, filters, pagination).
           // Keep blocking sensitive paths below.

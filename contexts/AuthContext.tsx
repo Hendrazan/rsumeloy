@@ -42,7 +42,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                 router.push('/admin');
             }
             if (_event === 'SIGNED_OUT') {
-                router.push('/login');
+                router.push('/admin/login');
             }
         });
         
@@ -66,7 +66,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const logout = async () => {
         const { error } = await supabase.auth.signOut();
         if (error) throw error;
-        router.push('/login'); // Manually trigger navigation
+        router.push('/admin/login'); // Manually trigger navigation
     };
 
     const value = useMemo(() => ({

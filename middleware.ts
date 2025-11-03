@@ -109,6 +109,11 @@ export async function middleware(request: NextRequest) {
     const { data: { session } } = await supabase.auth.getSession();
     const { pathname } = request.nextUrl;
 
+    // Redirect old /login route to /admin/login
+    if (pathname === '/login') {
+      return NextResponse.redirect(new URL('/admin/login', request.url));
+    }
+
     // Check if current path is an admin route
     const isAdminRoute = pathname.startsWith('/admin') || pathname.startsWith('/(admin)');
     
