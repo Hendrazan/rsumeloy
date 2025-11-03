@@ -10,7 +10,21 @@ const HomePageClient = dynamic(() => import("./HomePageClient"), { ssr: true });
 export const metadata: Metadata = {
   title: "RSU Meloy - Rumah Sakit Unggulan di Sangatta Utara, Kalimantan Timur",
   description: "RSU Meloy adalah rumah sakit terpercaya di Sangatta Utara dengan layanan medis 24 jam, dokter spesialis berpengalaman, fasilitas modern, dan komitmen pelayanan kesehatan terbaik untuk masyarakat Kalimantan Timur.",
-  keywords: ["rumah sakit sangatta", "RSU Meloy", "rumah sakit kalimantan timur", "UGD 24 jam", "dokter spesialis", "rawat inap", "medical checkup", "layanan kesehatan sangatta"],
+  keywords: [
+    "rumah sakit sangatta", 
+    "RSU Meloy", 
+    "rumah sakit kalimantan timur", 
+    "UGD 24 jam", 
+    "dokter spesialis", 
+    "rawat inap", 
+    "medical check up sangatta",
+    "mcu sangatta", 
+    "medical checkup kalimantan timur",
+    "pemeriksaan kesehatan lengkap",
+    "medical check up rsu meloy",
+    "layanan kesehatan sangatta",
+    "cek kesehatan menyeluruh"
+  ],
   alternates: {
     canonical: '/',
   },
