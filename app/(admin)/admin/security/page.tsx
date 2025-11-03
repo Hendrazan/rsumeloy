@@ -2,18 +2,6 @@ import { createClient } from '@/lib/supabase/server';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
 import { formatDate } from '@/lib/utils';
 
-interface SuspiciousUrl {
-  id: string;
-  timestamp: string;
-  path: string;
-  query_params: string | null;
-  full_url: string;
-  ip_address: string | null;
-  user_agent: string | null;
-  referer: string | null;
-  pattern_matched: string | null;
-}
-
 export default async function SecurityLogsPage() {
   const supabase = createClient();
   
@@ -121,7 +109,7 @@ export default async function SecurityLogsPage() {
                       </td>
                       <td className="p-3">
                         <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-destructive/10 text-destructive">
-                          {url.pattern_matched?.replace(/[\/\\]/g, '') || 'unknown'}
+                          {url.pattern_matched?.replace(/[/\\]/g, '') || 'unknown'}
                         </span>
                       </td>
                       <td className="p-3 text-xs text-muted-foreground max-w-xs truncate">
