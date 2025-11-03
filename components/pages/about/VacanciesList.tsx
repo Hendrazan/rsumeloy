@@ -14,6 +14,8 @@ interface VacanciesListProps {
 }
 
 const VacanciesList: React.FC<VacanciesListProps> = ({ vacancies }) => {
+    const [imageErrors, setImageErrors] = React.useState<Set<string>>(new Set());
+
     // Helper untuk extract plain text dari HTML untuk preview
     const getPlainTextPreview = (html: string, maxLength: number = 150): string => {
         // Strip HTML tags menggunakan regex
@@ -34,13 +36,18 @@ const VacanciesList: React.FC<VacanciesListProps> = ({ vacancies }) => {
         return plainText.substring(0, maxLength).trim() + '...';
     };
 
+    // Handler untuk image error
+    const handleImageError = (vacancyId: string) => {
+        setImageErrors(prev => new Set(prev).add(vacancyId));
+    };
+
     return (
         <div className="mt-8">
             <div className="columns-1 md:columns-2 gap-8 space-y-8">
                 {vacancies.length > 0 ? (vacancies.map((vacancy) => (
                     <Card key={vacancy.id} className="flex flex-col overflow-hidden transition-shadow hover:shadow-xl break-inside-avoid">
-                        {/* Gambar lowongan jika ada */}
-                        {vacancy.image_public_id && (
+                        {/* Gambar lowongan jika ada dan tidak error */}
+                        {vacancy.image_public_id && !imageErrors.has(vacancy.id) && (
                             <div className="w-full h-48 overflow-hidden bg-secondary">
                                 <OptimizedImage
                                     publicId={vacancy.image_public_id}
@@ -48,6 +55,7 @@ const VacanciesList: React.FC<VacanciesListProps> = ({ vacancies }) => {
                                     width={600}
                                     height={400}
                                     className="w-full h-full object-cover"
+                                    onError={() => handleImageError(vacancy.id)}
                                 />
                             </div>
                         )}

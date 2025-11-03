@@ -8,6 +8,7 @@ interface OptimizedImageProps extends Omit<ImageProps, 'src' | 'loading'> {
   publicId: string;
   loading?: 'eager' | 'lazy';
   preset?: 'default' | 'thumbnail' | 'banner' | 'avatar';
+  onError?: () => void;
 }
 
 const imageSizePresets = {
@@ -28,6 +29,7 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
   sizes = '100vw',
   className = '',
   fill,
+  onError,
   ...props 
 }) => {
   const optimizedSrc = getOptimizedUrl(publicId);
@@ -61,6 +63,7 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
     loading: priority ? 'eager' as const : 'lazy' as const,
     blurDataURL: `${optimizedSrc}?w=10&q=10&blur=1000`,
     placeholder: width > 40 && height > 40 ? 'blur' as const : undefined,
+    onError,
     ...props
   };
 
