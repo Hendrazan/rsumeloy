@@ -12,26 +12,72 @@ import { ArrowRight } from "../../../components/icons";
 import { truncateText, getPlainText } from "../../../lib/utils";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const t = (key: string) => translations['id'][key] || key;
   return {
-    title: `${t('layananTitle')} | RSU Meloy`,
-    description: t('layananSubtitle'),
+    title: `Layanan Medis Lengkap - UGD, Rawat Inap, Operasi, MCU | RSU Meloy Sangatta`,
+    description: `Layanan kesehatan komprehensif RSU Meloy: UGD 24 jam, Rawat Inap & Jalan, Operasi, Persalinan Normal & Caesar, Medical Check-Up, Hemodialisa, Fisioterapi, Kemoterapi, dan layanan medis spesialis lengkap di Sangatta, Kalimantan Timur.`,
+    keywords: [
+      // Primary service keywords
+      'layanan rumah sakit sangatta',
+      'layanan medis rsu meloy',
+      'pelayanan kesehatan sangatta',
+      'jasa medis sangatta',
+      
+      // Emergency services (HIGH VALUE!)
+      'ugd 24 jam sangatta',
+      'instalasi gawat darurat sangatta',
+      'emergency room sangatta',
+      'layanan darurat rsu meloy',
+      
+      // Inpatient & Outpatient
+      'rawat inap sangatta',
+      'rawat jalan sangatta',
+      'opname rumah sakit sangatta',
+      'poliklinik sangatta',
+      
+      // Surgery & Maternity
+      'operasi bedah sangatta',
+      'tindakan operasi sangatta',
+      'persalinan normal sangatta',
+      'operasi caesar sangatta',
+      'melahirkan di sangatta',
+      'bersalin rsu meloy',
+      
+      // Specialized services
+      'medical check up sangatta',
+      'mcu perusahaan sangatta',
+      'hemodialisa sangatta',
+      'cuci darah rsu meloy',
+      'fisioterapi sangatta',
+      'rehabilitasi medik sangatta',
+      'kemoterapi sangatta',
+      
+      // Diagnostic
+      'pemeriksaan lab sangatta',
+      'radiologi sangatta',
+      'ct scan sangatta',
+      'usg sangatta',
+      
+      // Regional
+      'layanan rumah sakit kalimantan timur',
+      'pelayanan kesehatan kaltim',
+      'rumah sakit sangatta utara'
+    ],
     openGraph: {
-      title: t('layananTitle'),
-      description: t('layananSubtitle'),
+      title: 'Layanan Medis Lengkap - UGD 24 Jam, Operasi, MCU | RSU Meloy',
+      description: 'Layanan komprehensif: UGD 24 jam, Rawat Inap/Jalan, Operasi, Persalinan, MCU, Hemodialisa, Fisioterapi, Kemoterapi. Pelayanan medis profesional di Sangatta.',
       url: '/layanan',
       type: 'website',
       images: [{
         url: 'https://res.cloudinary.com/ddyqhlilj/image/upload/ugdrsmeloysangatta',
         width: 1200,
         height: 630,
-        alt: t('layananTitle')
+        alt: 'Layanan Medis Lengkap RSU Meloy Sangatta'
       }]
     },
     twitter: {
       card: 'summary_large_image',
-      title: t('layananTitle'),
-      description: t('layananSubtitle'),
+      title: 'Layanan Medis Lengkap | RSU Meloy Sangatta',
+      description: 'UGD 24 jam, Rawat Inap, Operasi, Persalinan, MCU, Hemodialisa, Fisioterapi - Pelayanan kesehatan profesional',
       images: ['https://res.cloudinary.com/ddyqhlilj/image/upload/ugdrsmeloysangatta']
     },
     alternates: {

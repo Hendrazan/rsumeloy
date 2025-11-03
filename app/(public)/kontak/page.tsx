@@ -19,10 +19,67 @@ interface IframeProps extends React.IframeHTMLAttributes<HTMLIFrameElement> {
 export const revalidate = 3600; // Revalidate every hour
 
 export async function generateMetadata(): Promise<Metadata> {
-  const t = (key: string) => translations['id'][key] || key;
   return {
-    title: `${t('kontakTitle')} | RSU Meloy`,
-    description: t('kontakSubtitle'),
+    title: `Kontak Kami - Telepon, Alamat, Emergency 24 Jam | RSU Meloy Sangatta`,
+    description: `Hubungi RSU Meloy Sangatta: UGD 24 jam (0549) 24222, Pendaftaran Online APAM, Ambulance Emergency. Alamat: Jl. Yos Sudarso II No.101, Sangatta Utara, Kutai Timur, Kalimantan Timur. Layanan darurat tersedia setiap saat.`,
+    keywords: [
+      // Primary contact keywords
+      'kontak rumah sakit sangatta',
+      'nomor telepon rsu meloy',
+      'alamat rumah sakit sangatta',
+      'lokasi rsu meloy',
+      
+      // Emergency keywords (HIGH VALUE!)
+      'nomor UGD sangatta',
+      'telepon gawat darurat sangatta',
+      'emergency 24 jam sangatta',
+      'ambulance sangatta',
+      'ambulance rsu meloy',
+      'nomor darurat rumah sakit sangatta',
+      
+      // Online services
+      'pendaftaran online rsu meloy',
+      'apam rsu meloy',
+      'booking online rumah sakit sangatta',
+      'daftar online rsu meloy',
+      
+      // Location-specific
+      'rumah sakit jl yos sudarso sangatta',
+      'alamat rs sangatta utara',
+      'lokasi rumah sakit kutai timur',
+      'peta rumah sakit sangatta',
+      'arah ke rsu meloy',
+      
+      // Contact methods
+      'email rsu meloy',
+      'whatsapp rumah sakit sangatta',
+      'call center rs sangatta',
+      
+      // Regional
+      'kontak rumah sakit kalimantan timur',
+      'nomor darurat kaltim',
+      'emergency sangatta utara'
+    ],
+    alternates: {
+      canonical: '/kontak',
+    },
+    openGraph: {
+      title: 'Kontak Kami - Emergency 24 Jam | RSU Meloy Sangatta',
+      description: 'UGD 24 jam: (0549) 24222. Pendaftaran Online APAM. Ambulance Emergency. Jl. Yos Sudarso II No.101, Sangatta Utara. Siap melayani Anda kapan saja.',
+      url: '/kontak',
+      type: 'website',
+      images: [{
+        url: 'https://res.cloudinary.com/ddyqhlilj/image/upload/kontakrsmeloy_cv12fh',
+        width: 1200,
+        height: 630,
+        alt: 'Kontak RSU Meloy Sangatta - Emergency 24 Jam'
+      }]
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'Kontak RSU Meloy - Emergency 24 Jam',
+      description: 'UGD: (0549) 24222 | Ambulance | Pendaftaran Online | Jl. Yos Sudarso II No.101, Sangatta Utara',
+    },
   };
 }
 

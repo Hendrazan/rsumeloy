@@ -12,17 +12,75 @@ import { ArrowRight } from "../../../components/icons";
 import { truncateText, getPlainText } from "../../../lib/utils";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const t = (key: string) => translations['id'][key] || key;
   return {
-    title: `${t('fasilitasTitle')} | RSU Meloy`,
-    description: t('fasilitasSubtitle'),
+    title: `Fasilitas Medis Lengkap & Modern | RSU Meloy Sangatta`,
+    description: `Fasilitas kesehatan terlengkap di Sangatta: IGD 24 jam, Ruang Operasi modern, ICU/NICU, Laboratorium, Radiologi, CT Scan, USG 4D, Farmasi, Hemodialisa, dan Ambulance. Peralatan medis canggih dengan layanan profesional untuk kesehatan Anda.`,
+    keywords: [
+      // Primary facility keywords
+      'fasilitas rumah sakit sangatta',
+      'fasilitas rsu meloy',
+      'peralatan medis sangatta',
+      'fasilitas kesehatan sangatta',
+      
+      // Emergency & Critical Care
+      'IGD 24 jam sangatta',
+      'ruang gawat darurat sangatta',
+      'ICU sangatta',
+      'NICU sangatta',
+      'ruang intensif sangatta',
+      
+      // Operating & Maternity
+      'ruang operasi sangatta',
+      'kamar operasi modern sangatta',
+      'ruang bersalin sangatta',
+      'persalinan normal sangatta',
+      
+      // Diagnostic Equipment
+      'laboratorium klinik sangatta',
+      'cek lab sangatta',
+      'radiologi sangatta',
+      'rontgen sangatta',
+      'CT scan sangatta',
+      'USG sangatta',
+      'USG 4D sangatta',
+      'ekg sangatta',
+      
+      // Pharmacy & Therapy
+      'apotek rumah sakit sangatta',
+      'farmasi rsu meloy',
+      'hemodialisa sangatta',
+      'cuci darah sangatta',
+      'fisioterapi sangatta',
+      
+      // Inpatient facilities
+      'rawat inap sangatta',
+      'kamar pasien sangatta',
+      'ruang perawatan vip sangatta',
+      
+      // Regional
+      'fasilitas rumah sakit kalimantan timur',
+      'peralatan medis kaltim',
+      'rumah sakit modern sangatta utara'
+    ],
     alternates: {
       canonical: '/fasilitas',
     },
     openGraph: {
-      title: t('fasilitasTitle'),
-      description: t('fasilitasSubtitle'),
+      title: 'Fasilitas Medis Lengkap & Modern | RSU Meloy Sangatta',
+      description: 'Fasilitas kesehatan terlengkap: IGD 24 jam, Ruang Operasi modern, ICU/NICU, Lab, Radiologi, CT Scan, USG 4D, Hemodialisa. Peralatan medis canggih untuk pelayanan terbaik.',
       url: '/fasilitas',
+      type: 'website',
+      images: [{
+        url: 'https://res.cloudinary.com/ddyqhlilj/image/upload/ruang_operasi_shmxxc',
+        width: 1200,
+        height: 630,
+        alt: 'Fasilitas Medis Modern RSU Meloy Sangatta'
+      }]
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'Fasilitas Medis Lengkap & Modern | RSU Meloy',
+      description: 'IGD 24 jam, Ruang Operasi, ICU/NICU, Lab, Radiologi, CT Scan, USG 4D, Hemodialisa - Fasilitas lengkap untuk kesehatan Anda',
     },
   };
 }

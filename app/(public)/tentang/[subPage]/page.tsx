@@ -35,9 +35,77 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         return { title: 'Halaman Tidak Ditemukan' };
     }
 
+    // Enhanced SEO for Profile page (most important about page)
+    if (params.subPage === 'profile') {
+        return {
+            title: `Profil & Sejarah - Rumah Sakit Terbaik di Sangatta | RSU Meloy`,
+            description: `Profil lengkap RSU Meloy: Rumah sakit terpercaya di Sangatta sejak didirikan. Visi misi pelayanan kesehatan berkualitas, akreditasi nasional, tim medis profesional, dan komitmen kesehatan masyarakat Kalimantan Timur.`,
+            keywords: [
+                // Primary corporate keywords
+                'profil rumah sakit sangatta',
+                'profil rsu meloy',
+                'tentang rsu meloy',
+                'sejarah rumah sakit sangatta',
+                
+                // Trust & Quality
+                'rumah sakit terbaik sangatta',
+                'rumah sakit terpercaya sangatta',
+                'akreditasi rumah sakit sangatta',
+                'sertifikasi rsu meloy',
+                'standar pelayanan rumah sakit sangatta',
+                
+                // Vision & Mission
+                'visi misi rsu meloy',
+                'nilai rumah sakit sangatta',
+                'komitmen pelayanan kesehatan',
+                
+                // Team & Service
+                'tim medis rsu meloy',
+                'dokter profesional sangatta',
+                'tenaga kesehatan sangatta',
+                'pelayanan ramah rsu meloy',
+                
+                // Regional positioning
+                'rumah sakit unggulan kalimantan timur',
+                'rs terbaik kutai timur',
+                'rumah sakit modern sangatta utara',
+                'pusat kesehatan kaltim',
+                
+                // Awards & Recognition
+                'penghargaan rumah sakit sangatta',
+                'prestasi rsu meloy',
+                'akreditasi paripurna sangatta'
+            ],
+            alternates: {
+                canonical: '/tentang/profile',
+            },
+            openGraph: {
+                title: 'Profil & Sejarah RSU Meloy - Rumah Sakit Terbaik Sangatta',
+                description: 'Rumah sakit terpercaya di Sangatta dengan akreditasi nasional, tim medis profesional, dan komitmen pelayanan kesehatan berkualitas untuk Kalimantan Timur.',
+                url: '/tentang/profile',
+                type: 'website',
+                images: [{
+                    url: 'https://res.cloudinary.com/ddyqhlilj/image/upload/gedungrsmeloymalam',
+                    width: 1200,
+                    height: 630,
+                    alt: 'Profil RSU Meloy - Rumah Sakit Terbaik Sangatta'
+                }]
+            },
+            twitter: {
+                card: 'summary_large_image',
+                title: 'Profil RSU Meloy - Rumah Sakit Terbaik Sangatta',
+                description: 'Rumah sakit terpercaya dengan akreditasi nasional, tim medis profesional, pelayanan berkualitas',
+            },
+        };
+    }
+
+    // Default metadata for other subpages
     return {
         title: `${t(subPageInfo.labelKey)} | RSU Meloy`,
         description: t(subPageInfo.subtitleKey),
+        alternates: {
+            canonical: `/tentang/${params.subPage}`,
+        },
     };
 }
 
