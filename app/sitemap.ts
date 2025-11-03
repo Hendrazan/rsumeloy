@@ -95,7 +95,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
 
     // ✅ OPTIMIZED: Services dengan priority 0.8 dan weekly update
-    const serviceUrls = services.map(({ slug, created_at }) => ({
+    const serviceUrls = services.map(({ slug, created_at }: any) => ({
       url: `${siteUrl}/layanan/${slug}`,
       lastModified: new Date(created_at),
       changeFrequency: 'weekly' as const,
@@ -104,7 +104,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     sitemapEntries.push(...serviceUrls);
 
     // ✅ OPTIMIZED: Facilities dengan priority 0.7 dan monthly update
-    const facilityUrls = facilities.map(({ slug, created_at }) => ({
+    const facilityUrls = facilities.map(({ slug, created_at }: any) => ({
       url: `${siteUrl}/fasilitas/${slug}`,
       lastModified: new Date(created_at),
       changeFrequency: 'monthly' as const,
@@ -113,7 +113,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     sitemapEntries.push(...facilityUrls);
 
     // ✅ OPTIMIZED: Articles dengan priority 0.6 dan monthly update
-    const articleUrls = articles.map(({ slug, created_at }) => ({
+    const articleUrls = articles.map(({ slug, created_at }: any) => ({
       url: `${siteUrl}/tentang/artikel/${slug}`,
       lastModified: new Date(created_at),
       changeFrequency: 'monthly' as const,
@@ -122,7 +122,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     sitemapEntries.push(...articleUrls);
 
     // ✅ FIXED: Info items sekarang punya priority 0.5 dan weekly update (PREVIOUSLY MISSING!)
-    const infoUrls = info.map(({ id, created_at }) => ({
+    const infoUrls = info.map(({ id, created_at }: any) => ({
       url: `${siteUrl}/info/${id}`,
       lastModified: new Date(created_at),
       changeFrequency: 'weekly' as const,
@@ -131,7 +131,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     sitemapEntries.push(...infoUrls);
 
     // ✅ OPTIMIZED: Static routes dari navigation config
-    const staticUrls = navItemsConfig.flatMap(item => {
+    const staticUrls = navItemsConfig.flatMap((item: any) => {
       const routes: MetadataRoute.Sitemap = [];
       
       // Main route
@@ -144,7 +144,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
       // Sub-routes
       if (item.submenu) {
-        item.submenu.forEach(sub => {
+        item.submenu.forEach((sub: any) => {
           routes.push({
             url: `${siteUrl}${sub.path}`,
             lastModified: new Date(),
@@ -161,12 +161,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const urlMap = new Map<string, MetadataRoute.Sitemap[0]>();
     
     // Add static URLs first (they take precedence)
-    staticUrls.forEach(item => {
+    staticUrls.forEach((item: any) => {
       urlMap.set(item.url, item);
     });
 
     // Add dynamic URLs (won't override static)
-    sitemapEntries.slice(1).forEach(item => {
+    sitemapEntries.slice(1).forEach((item: any) => {
       if (!urlMap.has(item.url)) {
         urlMap.set(item.url, item);
       }
@@ -174,7 +174,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     // Build final sitemap
     const finalSitemap: MetadataRoute.Sitemap = [sitemapEntries[0]]; // Homepage first
-    urlMap.forEach(item => {
+    urlMap.forEach((item: any) => {
       finalSitemap.push(item);
     });
 
@@ -188,7 +188,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // ✅ FALLBACK: Return minimal sitemap dengan hanya homepage dan static routes
     console.log('⚠️ Falling back to minimal sitemap (homepage + static routes only)');
     
-    const fallbackStatic = navItemsConfig.map(item => ({
+    const fallbackStatic = navItemsConfig.map((item: any) => ({
       url: `${siteUrl}${item.path}`,
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
