@@ -127,7 +127,7 @@ export default async function ContactPage() {
                                 <CardContent className="p-0">
                                      <iframe 
                                         className="w-full h-[450px] border-0"
-                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d498.70790760743637!2d117.53498808013812!3d0.505139864509427!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x320a357123eebbfd%3A0xf44dda0e133317bb!2sRumah%20Sakit%20Meloy%20Sangatta!5e0!3m2!1sid!2sid!4v1758760684934!5m2!1sid!2sid"
+                                        src="https://www.google.com/maps?q=RSU+Meloy+Sangatta,Jl.+Yos+Sudarso+II+No.101,+Sangatta+Utara,+Kutai+Timur,+Kalimantan+Timur&output=embed&z=16"
                                         allowFullScreen={true}
                                         loading="lazy" 
                                         referrerPolicy="no-referrer-when-downgrade"
