@@ -1,0 +1,31 @@
+=====================================================
+  FOLDER PRODUKSI - WEBSITE RSU MELOY
+  Ready untuk Upload ke Hosting Jagoan Hosting
+=====================================================
+
+📦 FOLDER INI BERISI:
+- Build Next.js yang sudah dioptimalkan (standalone)
+- Server file dan dependencies
+- Scripts untuk start server
+- Panduan lengkap deployment
+
+🎯 CARA PAKAI:
+1. Upload SEMUA isi folder ini ke hosting via FTP
+2. Login SSH, jalankan: npm install --production
+3. Edit .env.local dengan kredensial Anda
+4. Jalankan: pm2 start server.js --name "rsumeloy"
+5. Setup reverse proxy & SSL
+
+📚 BACA PANDUAN:
+- MULAI_DISINI.md      → Ringkasan singkat
+- CHECKLIST_DEPLOY.md  → Checklist step-by-step
+- README_DEPLOY.md     → Panduan lengkap + troubleshooting
+
+⚠️ PENTING:
+- Node.js 18+ harus terinstall di server
+- Siapkan kredensial: Supabase, Cloudinary, Gemini
+- Jangan upload .env.local (buat di server)
+
+🚀 ESTIMASI WAKTU: 30-60 menit
+
+=====================================================

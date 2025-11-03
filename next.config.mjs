@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Output standalone untuk deployment yang lebih mudah
+  output: 'standalone',
+  
   // Konfigurasi untuk mengizinkan gambar yang dioptimalkan dari domain eksternal
   images: {
     remotePatterns: [
