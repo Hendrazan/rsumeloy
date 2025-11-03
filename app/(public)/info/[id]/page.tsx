@@ -9,6 +9,7 @@ import { Button } from '../../../../components/ui/Button';
 import { ArrowLeft } from '../../../../components/icons';
 import Link from 'next/link';
 import { formatDate, truncateText } from '../../../../lib/utils';
+import { sanitizeHtml } from '../../../../lib/sanitize';
 
 export async function generateStaticParams() {
     if (process.env.VERCEL_ENV === 'production' && process.env.NEXT_PHASE === 'build') {
@@ -75,7 +76,7 @@ export default async function InfoDetailPage({ params }: { params: { id: string 
                                 </div>
                                 <h1 className="text-3xl font-bold mb-4">{item.title}</h1>
                             </div>
-                            <div className="mt-6" dangerouslySetInnerHTML={{ __html: item.description }} />
+                            <div className="mt-6" dangerouslySetInnerHTML={{ __html: sanitizeHtml(item.description) }} />
                         </article>
                     </div>
                 </div>

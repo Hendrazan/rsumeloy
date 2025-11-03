@@ -1,9 +1,29 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { WebVitalInsert, isValidWebVitalName, evaluateWebVital } from '@/types/analytics';
+import { rateLimit } from '@/lib/rateLimit';
 
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting
+    const rateLimitResult = await rateLimit(request, {
+      interval: 60 * 1000, // 1 menit
+      uniqueTokenPerInterval: 20, // 20 requests per menit untuk analytics
+    });
+
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        { error: 'Too many requests. Please try again later.' },
+        { 
+          status: 429,
+          headers: {
+            'X-RateLimit-Limit': rateLimitResult.limit.toString(),
+            'X-RateLimit-Remaining': rateLimitResult.remaining.toString(),
+          }
+        }
+      );
+    }
+
     const supabase = createClient();
     const data = await request.json();
 

@@ -4,6 +4,7 @@
 import { GoogleGenAI } from "@google/genai";
 import { getAIAssistantConfig, getDoctors } from "../../lib/data";
 import type { Doctor } from "../../types/models";
+import { rateLimitAIAction } from "../../lib/rateLimitAction";
 
 const API_KEY = process.env.GEMINI_API_KEY;
 
@@ -26,6 +27,12 @@ const DEFAULT_SYSTEM_INSTRUCTION = `Anda adalah Asisten AI yang ramah dan memban
 
 
 export const getAIResponseAction = async (prompt: string): Promise<string> => {
+  // Rate limiting
+  const rateLimitResult = await rateLimitAIAction();
+  if (!rateLimitResult.success) {
+    return `Maaf, Anda telah mencapai batas permintaan. Silakan coba lagi dalam beberapa saat.\n\n(Rate limit: ${rateLimitResult.remaining}/${rateLimitResult.limit} tersisa)`;
+  }
+
   if (!API_KEY) {
     console.warn("Gemini API key not found. AI Assistant will provide a mock response.");
     return `Terima kasih atas pertanyaan Anda tentang "${prompt}".\n\nLayanan AI kami sedang dalam pemeliharaan. Untuk informasi akurat, silakan berkonsultasi langsung dengan dokter kami.\n\nDisclaimer: Informasi ini hanya untuk tujuan umum dan bukan pengganti nasihat medis profesional. Silakan berkonsultasi dengan dokter untuk masalah kesehatan apa pun.`;

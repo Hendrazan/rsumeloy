@@ -5,6 +5,7 @@ import { translations } from "../../../lib/translations";
 import PageHeader from '../../../components/layout/PageHeader';
 import { Card, CardContent } from '../../../components/ui/Card';
 import { Phone, Mail, MapPin } from '../../../components/icons';
+import { sanitizeHtml } from '../../../lib/sanitize';
 
 // Define Note interface
 interface Note {
@@ -81,18 +82,10 @@ export default async function ContactPage() {
                     </div>
                      {note && (
                         <div className="mt-16 pt-12 border-t">
-                            <div id="contact-note" className="max-w-4xl mx-auto prose"></div>
-                            <script
-                                dangerouslySetInnerHTML={{
-                                    __html: `
-                                    document.addEventListener('DOMContentLoaded', function() {
-                                        const noteElement = document.getElementById('contact-note');
-                                        if (noteElement && ${JSON.stringify(note?.content)}) {
-                                            noteElement.innerHTML = ${JSON.stringify(note.content)};
-                                        }
-                                    });
-                                    `
-                                }}
+                            <div 
+                                id="contact-note" 
+                                className="max-w-4xl mx-auto prose"
+                                dangerouslySetInnerHTML={{ __html: sanitizeHtml(note.content) }}
                             />
                         </div>
                     )}

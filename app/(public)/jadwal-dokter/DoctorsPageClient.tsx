@@ -13,6 +13,7 @@ import { FileDown, Loader2 } from '../../../components/icons';
 import { Doctor } from '../../../types';
 import { getOptimizedUrl } from '../../../lib/cloudinary';
 import { PrintableSchedule } from '../../../components/features/PrintableSchedule';
+import { sanitizeHtml } from '../../../lib/sanitize';
 
 interface DoctorsPageClientProps {
     doctors: Doctor[];
@@ -87,7 +88,7 @@ const DoctorsPageClient: React.FC<DoctorsPageClientProps> = ({ doctors, schedule
                 
                 {scheduleNote && (
                     <div className="mb-8 p-4 bg-secondary border border-border rounded-lg prose max-w-none">
-                        <div id="schedule-note" dangerouslySetInnerHTML={{ __html: scheduleNote }}></div>
+                        <div id="schedule-note" dangerouslySetInnerHTML={{ __html: sanitizeHtml(scheduleNote) }}></div>
                     </div>
                 )}
 

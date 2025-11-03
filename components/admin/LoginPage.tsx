@@ -8,6 +8,7 @@ import { Card, CardHeader, CardContent, CardTitle, CardDescription } from '../..
 import { Loader2, ArrowLeft } from '../../components/icons';
 import OptimizedImage from '../../components/ui/OptimizedImage';
 import Link from 'next/link';
+import { rateLimitedLogin } from '../../app/actions/auth';
 
 const LoginPage: React.FC = () => {
     const { login, session, loading: authLoading } = useAuth();
@@ -28,6 +29,15 @@ const LoginPage: React.FC = () => {
         setLoading(true);
         setError(null);
         try {
+            // Check rate limit terlebih dahulu
+            const rateLimitCheck = await rateLimitedLogin(email, password);
+            
+            if (!rateLimitCheck.success) {
+                setError(rateLimitCheck.error || 'Terlalu banyak percobaan login.');
+                setLoading(false);
+                return;
+            }
+
             await login(email, password);
             // Navigation is handled by the AuthContext now
         } catch (err: any) {

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import { sanitizeHtml } from '@/lib/sanitize';
 
 interface ClientSideContentProps {
     html: string;
@@ -18,7 +19,7 @@ const ClientSideContent: React.FC<ClientSideContentProps> = ({ html, className =
         return <div className={className}></div>;
     }
 
-    return <div className={className} dangerouslySetInnerHTML={{ __html: html }} />;
+    return <div className={className} dangerouslySetInnerHTML={{ __html: sanitizeHtml(html) }} />;
 };
 
 export default ClientSideContent;
