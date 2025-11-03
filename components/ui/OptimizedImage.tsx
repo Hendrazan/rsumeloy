@@ -32,6 +32,13 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
   onError,
   ...props 
 }) => {
+  // Safety check untuk publicId
+  if (!publicId || typeof publicId !== 'string') {
+    console.error('Invalid publicId:', publicId);
+    onError?.();
+    return null;
+  }
+
   const optimizedSrc = getOptimizedUrl(publicId);
   const presetConfig = imageSizePresets[preset];
   

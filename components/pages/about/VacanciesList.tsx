@@ -13,6 +13,37 @@ interface VacanciesListProps {
     vacancies: Vacancy[];
 }
 
+// Error Boundary untuk mencegah crash
+class VacancyErrorBoundary extends React.Component<
+    { children: React.ReactNode },
+    { hasError: boolean }
+> {
+    constructor(props: { children: React.ReactNode }) {
+        super(props);
+        this.state = { hasError: false };
+    }
+
+    static getDerivedStateFromError() {
+        return { hasError: true };
+    }
+
+    componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+        console.error('Vacancy error:', error, errorInfo);
+    }
+
+    render() {
+        if (this.state.hasError) {
+            return (
+                <div className="text-center py-8 text-muted-foreground">
+                    <p>Terjadi kesalahan saat memuat lowongan. Silakan refresh halaman.</p>
+                </div>
+            );
+        }
+
+        return this.props.children;
+    }
+}
+
 const VacanciesList: React.FC<VacanciesListProps> = ({ vacancies }) => {
     const [imageErrors, setImageErrors] = React.useState<Set<string>>(new Set());
 
@@ -42,20 +73,27 @@ const VacanciesList: React.FC<VacanciesListProps> = ({ vacancies }) => {
     };
 
     return (
-        <div className="mt-8">
-            <div className="columns-1 md:columns-2 gap-8 space-y-8">
-                {vacancies.length > 0 ? (vacancies.map((vacancy) => (
-                    <Card key={vacancy.id} className="flex flex-col overflow-hidden transition-shadow hover:shadow-xl break-inside-avoid">
+        <VacancyErrorBoundary>
+            <div className="mt-8">
+                <div className="columns-1 md:columns-2 gap-8 space-y-8">
+                    {vacancies.length > 0 ? (vacancies.map((vacancy) => (
+                        <Card key={vacancy.id} className="flex flex-col overflow-hidden transition-shadow hover:shadow-xl break-inside-avoid">
                         {/* Gambar lowongan jika ada dan tidak error */}
                         {vacancy.image_public_id && !imageErrors.has(vacancy.id) && (
                             <div className="w-full h-48 overflow-hidden bg-secondary">
                                 <OptimizedImage
                                     publicId={vacancy.image_public_id}
-                                    alt={vacancy.title}
+                                    alt={vacancy.title || 'Vacancy image'}
                                     width={600}
                                     height={400}
                                     className="w-full h-full object-cover"
-                                    onError={() => handleImageError(vacancy.id)}
+                                    onError={() => {
+                                        try {
+                                            handleImageError(vacancy.id);
+                                        } catch (e) {
+                                            console.error('Error handling image error:', e);
+                                        }
+                                    }}
                                 />
                             </div>
                         )}
@@ -71,7 +109,7 @@ const VacanciesList: React.FC<VacanciesListProps> = ({ vacancies }) => {
                         <CardContent className="flex-1">
                             {/* Preview deskripsi (plain text) */}
                             <p className="line-clamp-4 text-muted-foreground">
-                                {getPlainTextPreview(vacancy.description)}
+                                {vacancy.description ? getPlainTextPreview(vacancy.description) : 'Deskripsi tidak tersedia'}
                             </p>
                         </CardContent>
                         
@@ -97,6 +135,7 @@ const VacanciesList: React.FC<VacanciesListProps> = ({ vacancies }) => {
                 )}
             </div>
         </div>
+        </VacancyErrorBoundary>
     );
 };
 
