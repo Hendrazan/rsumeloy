@@ -4,6 +4,57 @@ import { createClient } from '@supabase/supabase-js';
 import { createServerClient } from '@supabase/ssr';
 
 export async function middleware(request: NextRequest) {
+  const { pathname, search } = request.nextUrl;
+  
+  // Daftar suspicious patterns untuk SEO spam/phishing
+  const suspiciousPatterns = [
+    /\b(login|slot|judi|togel|poker|casino|bet|gambling|cuan|gacor|maxwin)\b/i,
+    /\b(dansa|porno|xxx|sex|adult)\b/i,
+    /\b(obat|viagra|cialis|pharmacy)\b/i,
+    /\b(fake|scam|phishing)\b/i,
+  ];
+  
+  // Check untuk suspicious URL patterns
+  const fullPath = pathname + search;
+  const matchedPattern = suspiciousPatterns.find(pattern => pattern.test(fullPath));
+  
+  if (matchedPattern) {
+    const ipAddress = request.ip || request.headers.get('x-forwarded-for') || 'unknown';
+    const userAgent = request.headers.get('user-agent') || 'unknown';
+    const referer = request.headers.get('referer') || 'direct';
+    
+    console.warn('🚨 Suspicious URL detected:', fullPath, 'from IP:', ipAddress);
+    
+    // Log to database (async, tidak perlu await agar tidak blocking)
+    try {
+      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+      const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+      
+      fetch(`${supabaseUrl}/rest/v1/suspicious_urls`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`,
+        },
+        body: JSON.stringify({
+          path: pathname,
+          query_params: search || null,
+          full_url: fullPath,
+          ip_address: ipAddress,
+          user_agent: userAgent,
+          referer: referer,
+          pattern_matched: matchedPattern.toString(),
+        }),
+      }).catch(err => console.error('Failed to log suspicious URL:', err));
+    } catch (error) {
+      console.error('Error logging suspicious URL:', error);
+    }
+    
+    // Return 404 untuk suspicious URLs
+    return new NextResponse('Not Found', { status: 404 });
+  }
+  
   const res = NextResponse.next();
   
   // Create Supabase client
@@ -99,6 +150,8 @@ export const config = {
   matcher: [
     // Protect all admin routes
     '/admin',
-    '/admin/:path*'
+    '/admin/:path*',
+    // Check all routes for suspicious patterns
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ]
 }
