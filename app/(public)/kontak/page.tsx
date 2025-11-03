@@ -121,14 +121,42 @@ export default async function ContactPage() {
                         <div className="lg:col-span-2">
                              <Card className="overflow-hidden shadow-lg">
                                 <CardContent className="p-0">
-                                     <iframe 
-                                        className="w-full h-[450px] border-0"
-                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.4872367891543!2d117.53276887496614!3d0.5051398637394894!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x320a357123eebbfd%3A0xf44dda0e133317bb!2sRumah%20Sakit%20Meloy%20Sangatta!5e0!3m2!1sid!2sid!4v1730628000000!5m2!1sid!2sid"
-                                        allowFullScreen={true}
-                                        loading="lazy" 
-                                        referrerPolicy="no-referrer-when-downgrade"
-                                        title="Lokasi RSU Meloy di Google Maps"
-                                    ></iframe>
+                                    {/* Google Maps Static API - No iframe blocking issues */}
+                                    <a 
+                                        href="https://www.google.com/maps/place/Rumah+Sakit+Meloy+Sangatta/@0.5051399,117.5327689,17z"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="block relative group cursor-pointer"
+                                        title="Klik untuk membuka Google Maps"
+                                    >
+                                        {/* Static Map Image from Google Maps Static API */}
+                                        <div className="relative w-full h-[450px] bg-gray-200">
+                                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                                            <img
+                                                src="https://maps.googleapis.com/maps/api/staticmap?center=0.5051399,117.5353438&zoom=16&size=1200x450&markers=color:red%7Clabel:R%7C0.5051399,117.5353438&style=feature:poi%7Celement:labels%7Cvisibility:on&key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8"
+                                                alt="Peta Lokasi RSU Meloy Sangatta"
+                                                className="w-full h-full object-cover"
+                                                loading="lazy"
+                                                onError={(e) => {
+                                                    // Fallback to OpenStreetMap if Google fails
+                                                    const target = e.target as HTMLImageElement;
+                                                    target.src = "https://www.openstreetmap.org/export/embed.html?bbox=117.532%2C0.504%2C117.536%2C0.507&layer=mapnik&marker=0.5051399%2C117.5353438";
+                                                }}
+                                            />
+                                            {/* Hover Overlay */}
+                                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
+                                                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white px-6 py-3 rounded-lg shadow-xl transform scale-95 group-hover:scale-100">
+                                                    <MapPin className="w-5 h-5 inline-block mr-2 text-primary" />
+                                                    <span className="font-semibold text-primary">Buka di Google Maps</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {/* Address overlay */}
+                                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+                                            <p className="text-white font-semibold">📍 RSU Meloy Sangatta</p>
+                                            <p className="text-white/90 text-sm">Jl. Yos Sudarso II No.101, Sangatta Utara</p>
+                                        </div>
+                                    </a>
                                 </CardContent>
                             </Card>
                         </div>
