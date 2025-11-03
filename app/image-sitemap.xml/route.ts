@@ -1,5 +1,16 @@
 import { createClient } from '@/lib/supabase/server';
 
+interface ImageData {
+  slug?: string;
+  name?: string;
+  title?: string;
+  id?: string;
+  image_public_id?: string;
+  image_public_id_1?: string;
+  image_public_id_2?: string;
+  image_public_id_3?: string;
+}
+
 export async function GET() {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.rsumeloy.co.id';
   const supabase = createClient();
@@ -15,7 +26,7 @@ export async function GET() {
   const imageEntries: Array<{url: string, images: Array<{loc: string, title: string}>}> = [];
 
   // Services images
-  services?.forEach((service: any) => {
+  services?.forEach((service: ImageData) => {
     const images = [];
     if (service.image_public_id_1) images.push({ loc: `${cloudinaryBase}/${service.image_public_id_1}`, title: `${service.name} - Gambar 1` });
     if (service.image_public_id_2) images.push({ loc: `${cloudinaryBase}/${service.image_public_id_2}`, title: `${service.name} - Gambar 2` });
@@ -26,7 +37,7 @@ export async function GET() {
   });
 
   // Facilities images
-  facilities?.forEach((facility: any) => {
+  facilities?.forEach((facility: ImageData) => {
     const images = [];
     if (facility.image_public_id_1) images.push({ loc: `${cloudinaryBase}/${facility.image_public_id_1}`, title: `${facility.name} - Gambar 1` });
     if (facility.image_public_id_2) images.push({ loc: `${cloudinaryBase}/${facility.image_public_id_2}`, title: `${facility.name} - Gambar 2` });
@@ -37,7 +48,7 @@ export async function GET() {
   });
 
   // Articles images
-  articles?.forEach((article: any) => {
+  articles?.forEach((article: ImageData) => {
     if (article.image_public_id) {
       imageEntries.push({
         url: `${siteUrl}/tentang/artikel/${article.slug}`,
@@ -47,7 +58,7 @@ export async function GET() {
   });
 
   // Info images
-  info?.forEach((item: any) => {
+  info?.forEach((item: ImageData) => {
     if (item.image_public_id) {
       imageEntries.push({
         url: `${siteUrl}/info/${item.id}`,
