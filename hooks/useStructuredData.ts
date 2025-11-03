@@ -36,7 +36,7 @@ const hospitalData: LocalBusiness = {
     latitude: 0.5267, // Update dengan koordinat yang tepat
     longitude: 117.5953 // Update dengan koordinat yang tepat
   },
-  url: "https://rsumeloy.com",
+  url: "https://www.rsumeloy.co.id",
   openingHours: [
     "Mo-Su 00:00-24:00" // 24 jam
   ]

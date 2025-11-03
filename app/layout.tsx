@@ -35,7 +35,8 @@ const poppins = Poppins({
 
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://rsumeloy.com'),
+  // ✅ IMPROVED: metadataBase for SEO and Open Graph
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://www.rsumeloy.co.id'),
   title: {
     default: "RSU Meloy - Pelayanan Kesehatan Unggul di Sangatta Utara",
     template: "%s | RSU Meloy"

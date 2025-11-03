@@ -4,7 +4,7 @@ import hospitalInfo from '@/data/hospitalInfo.json';
 type JsonLd = Record<string, any>;
 
 export default function StructuredData({ extra, includeOrg = true }: { extra?: JsonLd | JsonLd[], includeOrg?: boolean }) {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://rsumeloy.com';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.rsumeloy.co.id';
 
   const organizationLd = {
     '@context': 'https://schema.org',

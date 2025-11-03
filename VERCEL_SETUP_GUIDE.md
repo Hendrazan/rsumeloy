@@ -12,8 +12,9 @@ You need these values from your `.env.local` file (DO NOT commit this file):
 ```bash
 NEXT_PUBLIC_SUPABASE_URL=https://xxxxx.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-NEXT_PUBLIC_SITE_URL=https://rsumeloy.com
-NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=ddyqhlilj
+```bash
+NEXT_PUBLIC_SITE_URL=https://www.rsumeloy.co.id
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your_cloud_name
 GOOGLE_AI_API_KEY=your_google_gemini_api_key (optional)
 ```
 
@@ -66,8 +67,9 @@ Already in code: `ddyqhlilj`
 
 ### Site URL:
 Your production domain:
-- https://rsumeloy.com (if custom domain)
-- https://rsumeloy.vercel.app (Vercel default)
+- Check these URLs work:
+- https://www.rsumeloy.co.id (if custom domain)
+- https://rsumeloy-git-master-yourname.vercel.app
 
 ### Google AI (Optional):
 1. https://makersuite.google.com/app/apikey

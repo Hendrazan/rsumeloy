@@ -65,7 +65,7 @@ const LoginPage: React.FC = () => {
                                 id="email"
                                 className="w-full mt-1 rounded-md border border-input bg-background px-3 py-2 text-base" 
                                 type="email" 
-                                placeholder="admin@rsumeloy.com" 
+                                placeholder="admin@rsumeloy.co.id" 
                                 value={email}
                                 onChange={e => setEmail(e.target.value)}
                                 required

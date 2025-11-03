@@ -47,7 +47,7 @@ export function useArticleSchema(article: {
       author: {
         "@type": "Person",
         name: article.author,
-        url: "https://rsumeloy.com/tentang"
+        url: "https://www.rsumeloy.co.id/tentang"
       },
       publisher: {
         "@type": "Organization",

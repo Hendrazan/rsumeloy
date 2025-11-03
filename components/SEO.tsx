@@ -26,7 +26,7 @@ function renderJsonLd(jsonLd: JsonLd | JsonLd[]) {
 }
 
 export default function SEO({ title, description, url, image, canonical, jsonLd }: SEOProps) {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://rsumeloy.com';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.rsumeloy.co.id';
   const siteTitle = title || hospitalInfo.name;
   const siteDescription = description || hospitalInfo.description;
   const pageUrl = url || siteUrl;

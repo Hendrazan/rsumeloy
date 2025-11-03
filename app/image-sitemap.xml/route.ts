@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
 
 export async function GET() {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://rsumeloy.com';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.rsumeloy.co.id';
   const supabase = createClient();
 
   // Fetch all data with images

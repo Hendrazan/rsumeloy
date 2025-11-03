@@ -21,7 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function DoctorsPage() {
     const doctors = await getDoctors();
     const t = (key: string) => translations['id'][key] || key;
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://rsumeloy.com';
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.rsumeloy.co.id';
 
     const breadcrumbLd = {
       '@context': 'https://schema.org',

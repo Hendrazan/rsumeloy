@@ -51,7 +51,7 @@ export default async function ArticleDetailPage({ params }: { params: { slug: st
     }
 
     // Build Article JSON-LD
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://rsumeloy.com';
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.rsumeloy.co.id';
     const articleUrl = `${siteUrl}/tentang/artikel/${params.slug}`;
     const articleLd = {
         '@context': 'https://schema.org',
