@@ -2,16 +2,29 @@ import { createClient } from '@/lib/supabase/server';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
 import { formatDate } from '@/lib/utils';
 
+interface SuspiciousUrl {
+  id: string;
+  timestamp: string;
+  path: string;
+  query_params: string | null;
+  full_url: string;
+  ip_address: string | null;
+  user_agent: string | null;
+  referer: string | null;
+  pattern_matched: string | null;
+}
+
 export default async function SecurityLogsPage() {
   const supabase = createClient();
   
   // Fetch suspicious URLs dari database
-  const { data: suspiciousUrls, error } = await supabase
+  const { data, error } = await supabase
     .from('suspicious_urls')
     .select('*')
     .order('timestamp', { ascending: false })
     .limit(100);
 
+  const suspiciousUrls = data as SuspiciousUrl[] | null;
   const totalCount = suspiciousUrls?.length || 0;
 
   return (
@@ -136,10 +149,10 @@ export default async function SecurityLogsPage() {
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
-              {Array.from(new Set(suspiciousUrls.map(u => u.user_agent)))
-                .filter(ua => ua)
+              {Array.from(new Set(suspiciousUrls.map((u: SuspiciousUrl) => u.user_agent)))
+                .filter((ua): ua is string => ua !== null)
                 .slice(0, 10)
-                .map((userAgent, idx) => (
+                .map((userAgent: string, idx: number) => (
                   <div key={idx} className="p-3 bg-secondary/30 rounded text-xs font-mono break-all">
                     {userAgent}
                   </div>
