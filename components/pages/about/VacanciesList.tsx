@@ -1,12 +1,13 @@
 
+'use client';
+
 import React from 'react';
 import { Card, CardHeader, CardContent, CardFooter, CardTitle } from '../../ui/Card';
 import { Button } from '../../ui/Button';
 import { Briefcase, MapPin, Calendar } from '../../icons';
-import { formatDate, truncateText } from '../../../lib/utils';
+import { formatDate } from '../../../lib/utils';
 import { Vacancy } from '../../../types';
 import OptimizedImage from '../../ui/OptimizedImage';
-import { sanitizeHtml } from '../../../lib/sanitize';
 
 interface VacanciesListProps {
     vacancies: Vacancy[];
@@ -14,11 +15,23 @@ interface VacanciesListProps {
 
 const VacanciesList: React.FC<VacanciesListProps> = ({ vacancies }) => {
     // Helper untuk extract plain text dari HTML untuk preview
-    const getPlainTextPreview = (html: string, maxLength: number = 150) => {
-        const div = document.createElement('div');
-        div.innerHTML = html;
-        const text = div.textContent || div.innerText || '';
-        return truncateText(text, maxLength);
+    const getPlainTextPreview = (html: string, maxLength: number = 150): string => {
+        // Strip HTML tags menggunakan regex
+        const plainText = html
+            .replace(/<[^>]*>/g, '') // Remove HTML tags
+            .replace(/&nbsp;/g, ' ') // Replace &nbsp; dengan spasi
+            .replace(/&amp;/g, '&')  // Replace &amp; dengan &
+            .replace(/&lt;/g, '<')   // Replace &lt; dengan <
+            .replace(/&gt;/g, '>')   // Replace &gt; dengan >
+            .replace(/&quot;/g, '"') // Replace &quot; dengan "
+            .replace(/\s+/g, ' ')    // Replace multiple spaces dengan single space
+            .trim();
+        
+        // Truncate text
+        if (plainText.length <= maxLength) {
+            return plainText;
+        }
+        return plainText.substring(0, maxLength).trim() + '...';
     };
 
     return (
@@ -49,15 +62,9 @@ const VacanciesList: React.FC<VacanciesListProps> = ({ vacancies }) => {
                         
                         <CardContent className="flex-1">
                             {/* Preview deskripsi (plain text) */}
-                            {typeof window !== 'undefined' ? (
-                                <p className="line-clamp-4 text-muted-foreground">
-                                    {getPlainTextPreview(vacancy.description)}
-                                </p>
-                            ) : (
-                                <p className="line-clamp-4 text-muted-foreground">
-                                    {truncateText(vacancy.description, 150)}
-                                </p>
-                            )}
+                            <p className="line-clamp-4 text-muted-foreground">
+                                {getPlainTextPreview(vacancy.description)}
+                            </p>
                         </CardContent>
                         
                         <CardFooter className="p-6 bg-secondary/80 flex-wrap justify-between items-center gap-4">
