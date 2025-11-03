@@ -59,9 +59,10 @@ export interface Partner {
 export interface Vacancy {
   id: string;
   title: string;
-  description: string;
+  description: string; // Rich HTML content
   type: string;
   location: string;
+  image_public_id?: string | null; // Optional vacancy image
   deadline: string; // ISO string date
   created_at: string;
 }

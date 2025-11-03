@@ -111,15 +111,17 @@ export const collectionConfigs: Record<string, CollectionConfig> = {
         title: 'Lowongan',
         icon: Briefcase,
         fields: [
-            { name: 'title', label: 'Posisi', type: 'text', required: true },
-            { name: 'description', label: 'Deskripsi', type: 'textarea', required: true },
-            { name: 'type', label: 'Tipe Pekerjaan', type: 'text', placeholder: 'e.g., Full-time', required: true },
-            { name: 'location', label: 'Lokasi', type: 'text', required: true },
+            { name: 'title', label: 'Posisi', type: 'text', required: true, placeholder: 'Contoh: Perawat IGD' },
+            { name: 'description', label: 'Deskripsi Lengkap', type: 'richtext', required: true, placeholder: 'Tulis deskripsi pekerjaan, kualifikasi, dan benefit...' },
+            { name: 'type', label: 'Tipe Pekerjaan', type: 'select', options: ['Full-time', 'Part-time', 'Kontrak', 'Magang'], required: true },
+            { name: 'location', label: 'Lokasi', type: 'text', required: true, placeholder: 'Contoh: RSU Meloy, Sangatta' },
+            { name: 'image_public_id', label: 'Gambar Lowongan (Opsional)', type: 'text', placeholder: 'rsu-meloy/lowongan/nama-file' },
             { name: 'deadline', label: 'Batas Akhir', type: 'date', required: true },
         ],
         displayColumns: [
             { header: 'Posisi', accessor: 'title' },
             { header: 'Tipe', accessor: 'type' },
+            { header: 'Lokasi', accessor: 'location' },
             { header: 'Batas Akhir', accessor: 'deadline' },
         ]
     },
