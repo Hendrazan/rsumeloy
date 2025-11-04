@@ -116,7 +116,13 @@ export async function middleware(request: NextRequest) {
 
   try {
     // Get session
-    const { data: { session } } = await supabase.auth.getSession();
+    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+    
+    if (sessionError) {
+      console.error('Session error in middleware:', sessionError);
+      // Continue without session on error
+    }
+    
     const { pathname } = request.nextUrl;
 
     // Redirect old /login route to /admin/login
@@ -151,12 +157,13 @@ export async function middleware(request: NextRequest) {
 
     return res;
   } catch (error) {
-    console.error('Auth error:', error);
-    // Redirect to login on auth error for admin routes
+    console.error('Middleware error:', error);
+    // Redirect to login on auth error for admin routes, but don't crash
     const currentPath = request.nextUrl.pathname;
-    if (currentPath.startsWith('/admin') || currentPath.startsWith('/(admin)')) {
+    if (currentPath.startsWith('/admin') && currentPath !== '/admin/login') {
       return NextResponse.redirect(new URL('/admin/login', request.url));
     }
+    // For non-admin routes, continue without authentication check
     return res;
   }
 }

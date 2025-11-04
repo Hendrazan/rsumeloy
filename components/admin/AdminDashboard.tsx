@@ -2,7 +2,8 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { useData } from '../../hooks/useContextHooks';
+import { useRouter } from 'next/navigation';
+import { useData, useAuth } from '../../hooks/useContextHooks';
 import { Loader2 } from '../../components/icons';
 import AdminSidebar from '../../components/admin/AdminSidebar';
 import AdminHeader from '../../components/admin/AdminHeader';
@@ -13,10 +14,19 @@ import { TableName } from '../../types';
 import DatabaseFixWarning from '../../components/admin/DatabaseFixWarning';
 
 const AdminDashboard: React.FC = () => {
+    const router = useRouter();
+    const { session, loading: authLoading } = useAuth();
     const data = useData();
     const { missingTables } = data;
     const [activeTab, setActiveTab] = useState<TableName>('doctors');
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+    // Redirect to login if not authenticated
+    useEffect(() => {
+        if (!authLoading && !session) {
+            router.replace('/admin/login');
+        }
+    }, [session, authLoading, router]);
 
     useEffect(() => {
         // Prevent auto refresh when tab visibility changes
@@ -30,7 +40,8 @@ const AdminDashboard: React.FC = () => {
         };
     }, []);
 
-    if (data.loading) {
+    // Show loading while checking auth or loading data
+    if (authLoading || !session || data.loading) {
         return <div className="flex h-screen w-full items-center justify-center"><Loader2 className="h-16 w-16 animate-spin text-primary" /></div>;
     }
 

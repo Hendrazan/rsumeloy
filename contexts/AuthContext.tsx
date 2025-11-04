@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { createContext, useState, useEffect, useMemo } from 'react';
+import React, { createContext, useState, useEffect, useMemo, useCallback } from 'react';
 import { createBrowserClient } from '@supabase/ssr';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { AuthContextType, Session } from '../types';
@@ -57,17 +57,27 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         return () => subscription.unsubscribe();
     }, [supabase, router]);
 
-    const login = async (email: string, pass: string) => {
-        const { error } = await supabase.auth.signInWithPassword({ email, password: pass });
-        if (error) throw error;
-        router.push('/admin'); // Manually trigger navigation
-    };
+    const login = useCallback(async (email: string, pass: string) => {
+        try {
+            const { error } = await supabase.auth.signInWithPassword({ email, password: pass });
+            if (error) throw error;
+            router.push('/admin'); // Manually trigger navigation
+        } catch (error) {
+            console.error('Login error:', error);
+            throw error;
+        }
+    }, [supabase, router]);
 
-    const logout = async () => {
-        const { error } = await supabase.auth.signOut();
-        if (error) throw error;
-        router.push('/admin/login'); // Manually trigger navigation
-    };
+    const logout = useCallback(async () => {
+        try {
+            const { error } = await supabase.auth.signOut();
+            if (error) throw error;
+            router.push('/admin/login'); // Manually trigger navigation
+        } catch (error) {
+            console.error('Logout error:', error);
+            throw error;
+        }
+    }, [supabase, router]);
 
     const value = useMemo(() => ({
         supabase,
@@ -75,7 +85,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         loading,
         login,
         logout
-    }), [session, loading, supabase]);
+    }), [session, loading, supabase, login, logout]);
 
     return (
         <AuthContext.Provider value={value}>
