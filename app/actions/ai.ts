@@ -6,7 +6,7 @@ import { getAIAssistantConfig, getDoctors } from "../../lib/data";
 import type { Doctor } from "../../types/models";
 import { rateLimitAIAction } from "../../lib/rateLimitAction";
 
-const API_KEY = process.env.GEMINI_API_KEY;
+const API_KEY = process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY;
 
 const DEFAULT_SYSTEM_INSTRUCTION = `Anda adalah Asisten AI yang ramah dan membantu untuk RSU Meloy, sebuah rumah sakit umum di Sangatta, Indonesia. Peran Anda adalah memberikan informasi kesehatan umum dan menjawab pertanyaan pengguna dengan jelas dan ringkas dalam Bahasa Indonesia.
 
@@ -40,10 +40,20 @@ export const getAIResponseAction = async (prompt: string): Promise<string> => {
 
   try {
     const ai = new GoogleGenAI({ apiKey: API_KEY });
-    const [configData, doctorsData] = await Promise.all([
+    
+    // Fetch data with error handling
+    let configData, doctorsData;
+    try {
+      [configData, doctorsData] = await Promise.all([
         getAIAssistantConfig(),
         getDoctors()
-    ]);
+      ]);
+    } catch (dataError) {
+      console.error("Error fetching data:", dataError);
+      // Use empty arrays as fallback
+      configData = [];
+      doctorsData = [];
+    }
     
     const basePrompt = configData?.[0]?.base_prompt || DEFAULT_SYSTEM_INSTRUCTION;
     

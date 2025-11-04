@@ -8,16 +8,21 @@ import { fallbackServices, fallbackFacilities, fallbackInfoItems, fallbackArticl
 const isVercelBuild = process.env.VERCEL_ENV === 'production' && process.env.NEXT_PHASE === 'build';
 
 export const getDoctors = cache(async () => {
-    const supabase = createClient();
-    const { data, error } = await supabase
-        .from('doctors')
-        .select('*')
-        .order('display_order', { ascending: true, nullsFirst: false });
-    if (error) {
-        console.error('Error fetching doctors:', error.message);
+    try {
+        const supabase = createClient();
+        const { data, error } = await supabase
+            .from('doctors')
+            .select('*')
+            .order('display_order', { ascending: true, nullsFirst: false });
+        if (error) {
+            console.error('Error fetching doctors:', error.message);
+            return [];
+        }
+        return data || [];
+    } catch (error) {
+        console.error('Error in getDoctors:', error);
         return [];
     }
-    return data;
 });
 
 export const getServices = cache(async () => {

@@ -44,22 +44,29 @@ export async function rateLimitAction(
     uniqueTokenPerInterval: 10,
   }
 ): Promise<{ success: boolean; remaining: number; limit: number }> {
-  const headersList = headers();
-  const userAgent = headersList.get('user-agent') || '';
+  let ip = 'unknown';
+  
+  try {
+    const headersList = headers();
+    const userAgent = headersList.get('user-agent') || '';
 
-  // Whitelist search engine bots
-  if (isSearchEngineBot(userAgent)) {
-    return {
-      success: true,
-      remaining: 999,
-      limit: 999,
-    };
+    // Whitelist search engine bots
+    if (isSearchEngineBot(userAgent)) {
+      return {
+        success: true,
+        remaining: 999,
+        limit: 999,
+      };
+    }
+
+    const forwarded = headersList.get('x-forwarded-for');
+    ip = forwarded ? forwarded.split(',')[0].trim() : 
+         headersList.get('x-real-ip') || 
+         'unknown';
+  } catch (error) {
+    console.error("Error getting headers in rateLimitAction:", error);
+    // Continue with 'unknown' IP
   }
-
-  const forwarded = headersList.get('x-forwarded-for');
-  const ip = forwarded ? forwarded.split(',')[0].trim() : 
-             headersList.get('x-real-ip') || 
-             'unknown';
 
   const now = Date.now();
   const tokenKey = `${ip}`;
