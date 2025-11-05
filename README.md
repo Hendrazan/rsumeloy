@@ -32,9 +32,9 @@
 
 Website resmi **RSU Meloy Sangatta** - Rumah Sakit modern di Sangatta, Kalimantan Timur yang menyediakan layanan kesehatan berkualitas dengan teknologi terkini.
 
-**Alamat:** Jl. Teluk Lingga No.1, Sangatta Utara, Kutai Timur, Kalimantan Timur 75387  
-**Kontak:** 0542-21100 / 0542-21150  
-**WhatsApp:** +62 812-5232-1909
+**Alamat:** Jl. Yos Sudarso II No.101 Sangatta Utara, Kutai Timur, Kalimantan Timur, 75611  
+**Kontak:** (0549) 24222  
+**WhatsApp:** +62 811-549-5477
 
 ---
 
@@ -127,67 +127,6 @@ NODE_ENV=development
 ```
 
 ---
-
-## 🚀 Deployment Production
-
-### Option 1: Upload via FTP/WinSCP (Recommended untuk JagoanHosting)
-
-#### 📦 Persiapan Folder Production
-
-```bash
-# 1. Build aplikasi
-npm run build
-
-# 2. Buat folder production (otomatis)
-prepare-production.bat
-
-# Atau manual:
-npm run build
-```
-
-Hasil: Folder `production/` siap upload (**26-30 MB** only!)
-
-#### 📤 Upload ke JagoanHosting
-
-**Step-by-step lengkap:** Lihat [PANDUAN_UPLOAD_WINSCP.md](./PANDUAN_UPLOAD_WINSCP.md)
-
-**Quick steps:**
-1. Edit `.env.local` di folder `production/`
-2. Download WinSCP (https://winscp.net)
-3. Koneksi FTP ke JagoanHosting
-4. Upload semua file dari `production/` ke `/public_html/`
-5. Setup Node.js App di cPanel
-6. Done! ✅
-
-**Estimasi waktu:** 30-40 menit
-
-**Checklist:** Gunakan [CHECKLIST_UPLOAD.md](./CHECKLIST_UPLOAD.md)
-
----
-
-### Option 2: Deploy ke Vercel (Alternatif)
-
-```bash
-# Install Vercel CLI
-npm i -g vercel
-
-# Deploy
-vercel --prod
-```
-
----
-
-## 📚 Dokumentasi Lengkap
-
-### 🎯 Panduan Deployment
-
-| Dokumen | Deskripsi | Link |
-|---------|-----------|------|
-| **PANDUAN_UPLOAD_WINSCP.md** | Tutorial lengkap upload via WinSCP ke JagoanHosting | [Buka](./PANDUAN_UPLOAD_WINSCP.md) |
-| **CHECKLIST_UPLOAD.md** | Checklist step-by-step deployment | [Buka](./CHECKLIST_UPLOAD.md) |
-| **RINGKASAN_FOLDER_PRODUKSI.md** | Ringkasan folder production & cara pakai | [Buka](./RINGKASAN_FOLDER_PRODUKSI.md) |
-| **PANDUAN_UPLOAD_FTP_PRODUKSI.md** | Penjelasan teknis standalone mode | [Buka](./PANDUAN_UPLOAD_FTP_PRODUKSI.md) |
-
 ### 📊 Analisis & Dokumentasi
 
 | Dokumen | Deskripsi | Link |
@@ -309,13 +248,6 @@ prepare-production.bat   # Create production folder (Windows)
 npm install
 npm run build
 ```
-
-### Database Connection Error
-Cek environment variables `NEXT_PUBLIC_SUPABASE_URL` dan `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-
-### Gambar Tidak Muncul
-Cek `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME` di `.env.local`
-
 Dokumentasi lengkap: [ANALISIS_POTENSI_ERROR.md](./ANALISIS_POTENSI_ERROR.md)
 
 ---
@@ -328,7 +260,7 @@ Copyright © 2024 RSU Meloy Sangatta. All rights reserved.
 
 ## 👥 Team
 
-**Developer:** [Your Name]  
+**Developer:** [Hendrazan]  
 **Client:** RSU Meloy Sangatta  
 **Hosting:** JagoanHosting  
 **Database:** Supabase  
@@ -341,8 +273,8 @@ Copyright © 2024 RSU Meloy Sangatta. All rights reserved.
 **RSU Meloy Sangatta:**
 - 🌐 Website: https://rsumeloy.co.id
 - 📧 Email: info@rsumeloy.co.id
-- 📱 WhatsApp: +62 812-5232-1909
-- 📞 Telepon: 0542-21100 / 0542-21150
+- 📱 WhatsApp: +62 811-549-547
+- 📞 Telepon: (0549) 24222 
 
 **JagoanHosting Support:**
 - 🌐 Website: https://jagoanhosting.com
