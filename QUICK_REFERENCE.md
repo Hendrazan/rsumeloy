@@ -4,6 +4,15 @@
 
 ---
 
+## ⚠️ PENTING - CloudLinux Node.js Selector
+
+**❌ JANGAN upload folder `node_modules/`!**
+**✅ CloudLinux membuat symlink otomatis!**
+
+Dokumentasi lengkap: **PANDUAN_CLOUDLINUX_NODEJS.md**
+
+---
+
 ## ✅ CHECKLIST CEPAT
 
 ### 1. PERSIAPAN (5 MENIT)
@@ -12,6 +21,7 @@
 □ RENAME: .env.local.template → .env.local
 □ EDIT & ISI environment variables
 □ SAVE file
+□ VERIFIKASI: Tidak ada folder node_modules/
 ```
 
 ### 2. WINSCP SETUP (5 MENIT)
@@ -21,22 +31,25 @@
 □ Data FTP dari JagoanHosting siap
 ```
 
-### 3. UPLOAD (10-15 MENIT)
+### 3. UPLOAD (5-10 MENIT)
 ```
 □ WinSCP → New Session
 □ Protocol: FTP, Port: 21
 □ Host, Username, Password dari JagoanHosting
 □ Login → Navigate /public_html/
-□ Upload SEMUA dari production/ (26 MB)
+□ Upload SEMUA dari production/ (8.99 MB)
 □ Tunggu progress 100%
+□ VERIFIKASI: node_modules/ TIDAK terupload
 ```
 
-### 4. SETUP SERVER (10 MENIT)
+### 4. SETUP NODE.JS SELECTOR (10 MENIT)
 ```
 □ Login cPanel JagoanHosting
-□ Menu: Setup Node.js App
+□ Menu: Setup Node.js App (WAJIB!)
 □ Node.js: 18.x, Root: public_html, Startup: server.js
-□ Create & Start
+□ Create → Tunggu npm install (5-10 menit)
+□ VERIFIKASI: node_modules jadi symlink
+□ Start & Running
 ```
 
 ### 5. TEST (5 MENIT)
@@ -91,34 +104,44 @@ Password:   __________________ (dari JagoanHosting)
 
 ---
 
-## 📦 FILE YANG DIUPLOAD (26 MB)
+## 📦 FILE YANG DIUPLOAD (8.99 MB)
 
 ```
 production/
-├── .next/          (15-20 MB) ✓
+├── .next/          (3-5 MB) ✓
 ├── public/         (2-3 MB) ✓
-├── node_modules/   (10-15 MB) ✓
 ├── app/            (1-2 MB) ✓
 ├── data/           (100 KB) ✓
 ├── server.js       (5 KB) ✓
-├── package.json    (2 KB) ✓
+├── package.json    (2 KB) ✓ PENTING!
 └── .env.local      (1 KB) ✓ WAJIB!
+
+❌ node_modules/  JANGAN DIUPLOAD!
+✅ Dibuat otomatis oleh CloudLinux Node.js Selector!
 ```
 
 ---
 
 ## 🚨 TROUBLESHOOTING CEPAT
 
+**Error: "node_modules must be a symlink":**
+```bash
+# Di cPanel File Manager
+1. DELETE folder node_modules (jika ada)
+2. Node.js Selector → Restart
+3. Sistem buat symlink otomatis
+```
+
 **Website tidak bisa diakses:**
 ```bash
-pm2 status
-pm2 restart rsumeloy
+# Di Node.js Selector
+Status: Restart Application
 ```
 
 **Cannot find module:**
 ```bash
-cd public_html
-npm install --production
+# Di Node.js Selector
+Run NPM Install → Restart
 ```
 
 **Gambar tidak muncul:**
@@ -146,16 +169,16 @@ npm install --production
 
 ---
 
-## ⏱️ ESTIMASI WAKTU TOTAL: 35-40 MENIT
+## ⏱️ ESTIMASI WAKTU TOTAL: 25-30 MENIT
 
 ```
 Persiapan .env.local:    5 menit
 Download WinSCP:         5 menit
-Upload file:            10-15 menit
-Setup cPanel:           10 menit
-Testing:                5 menit
+Upload file:             5-10 menit (8.99 MB)
+Setup Node.js Selector:  10 menit (npm install otomatis)
+Testing:                 5 menit
 ---------------------------------
-TOTAL:                  35-40 menit
+TOTAL:                   25-30 menit (10 menit lebih cepat!)
 ```
 
 ---
