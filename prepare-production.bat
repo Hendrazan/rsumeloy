@@ -33,10 +33,19 @@ mkdir production
 echo ✓ Folder production dibuat
 echo.
 
-REM Copy standalone files ke root production
-echo [2/6] Menyalin file standalone...
-xcopy /E /I /Y ".next\standalone\*" "production\" > nul
-echo ✓ File standalone disalin
+REM Copy standalone files KECUALI node_modules
+echo [2/6] Menyalin file standalone (tanpa node_modules)...
+for /d %%D in (".next\standalone\*") do (
+    if /i not "%%~nxD"=="node_modules" (
+        xcopy /E /I /Y "%%D" "production\%%~nxD" > nul
+    )
+)
+for %%F in (".next\standalone\*") do (
+    if not "%%~xF"=="" (
+        copy /Y "%%F" "production\" > nul
+    )
+)
+echo ✓ File standalone disalin (node_modules di-skip)
 echo.
 
 REM Copy .next/static ke production/.next/static
@@ -51,8 +60,31 @@ xcopy /E /I /Y "public" "production\public" > nul
 echo ✓ Folder public disalin
 echo.
 
+REM Buat file package.json untuk CloudLinux Node.js Selector
+echo [5/6] Membuat package.json untuk CloudLinux...
+(
+echo {
+echo   "name": "rsumeloy-production",
+echo   "version": "1.0.0",
+echo   "private": true,
+echo   "scripts": {
+echo     "start": "node server.js"
+echo   },
+echo   "dependencies": {
+echo     "next": "14.2.33",
+echo     "react": "^18.0.0",
+echo     "react-dom": "^18.0.0"
+echo   },
+echo   "engines": {
+echo     "node": ">=18.0.0"
+echo   }
+echo }
+) > "production\package.json"
+echo ✓ package.json dibuat untuk CloudLinux
+echo.
+
 REM Buat file .env.local template untuk produksi
-echo [5/6] Membuat template .env.local...
+echo [6/7] Membuat template .env.local...
 (
 echo # ========================================
 echo # ENVIRONMENT VARIABLES - PRODUCTION
@@ -79,7 +111,7 @@ echo ✓ Template .env.local dibuat
 echo.
 
 REM Buat file README untuk instruksi upload
-echo [6/6] Membuat README instruksi...
+echo [7/7] Membuat README instruksi...
 (
 echo # ========================================
 echo # INSTRUKSI UPLOAD KE JAGOANHOSTING
@@ -98,6 +130,11 @@ echo    - NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
 echo    - GEMINI_API_KEY
 echo    - SESSION_SECRET
 echo.
+echo ## PENTING - CloudLinux Node.js Selector:
+echo.
+echo JagoanHosting menggunakan CloudLinux dengan Node.js Selector.
+echo node_modules TIDAK diupload! Akan dibuat otomatis sebagai symlink.
+echo.
 echo ## Struktur Upload dengan WinSCP:
 echo.
 echo Upload SEMUA isi folder 'production' ke ROOT public_html:
@@ -107,10 +144,11 @@ echo   ├── .next/
 echo   │   ├── server/           ^(dari standalone^)
 echo   │   └── static/           ^(dari .next/static^)
 echo   ├── public/               ^(folder public^)
-echo   ├── node_modules/         ^(dari standalone - minimal^)
-echo   ├── package.json          ^(dari standalone^)
+echo   ├── package.json          ^(WAJIB - untuk install dependencies^)
 echo   ├── server.js             ^(dari standalone^)
 echo   └── .env.local            ^(WAJIB isi dulu!^)
+echo.
+echo CATATAN: node_modules TIDAK diupload ^(akan dibuat otomatis^)
 echo.
 echo ## Cara Upload dengan WinSCP FTP:
 echo.
@@ -124,18 +162,27 @@ echo.
 echo 7. Koneksi dan masuk ke folder public_html
 echo 8. Upload SEMUA isi folder 'production' ke public_html
 echo.
-echo ## Setelah Upload:
+echo ## Setelah Upload - Setup di cPanel:
 echo.
-echo 1. Pastikan file .env.local sudah ada dan terisi
-echo 2. Set permission server.js: 755
-echo 3. Jalankan: node server.js
-echo 4. Atau setup PM2: pm2 start server.js --name rsumeloy
+echo 1. Login ke cPanel JagoanHosting
+echo 2. Cari menu: Setup Node.js App
+echo 3. Create Application:
+echo    - Node.js version: 18.x atau 20.x
+echo    - Application mode: Production
+echo    - Application root: public_html
+echo    - Application startup file: server.js
+echo 4. Klik Create
+echo 5. Sistem akan otomatis:
+echo    - Membuat symlink node_modules
+echo    - Menjalankan npm install
+echo    - Setup virtual environment
+echo 6. Klik Start/Restart
 echo.
 echo ## Ukuran Upload:
-echo - Total: ~60-90 MB
-echo - node_modules: ~40-60 MB ^(minimal, bukan 400-800 MB^)
-echo - .next: ~15-25 MB
-echo - public: ~5-10 MB
+echo - Total: ~5-10 MB ^(SANGAT KECIL!^)
+echo - node_modules: TIDAK DIUPLOAD ^(dibuat otomatis di server^)
+echo - .next: ~3-5 MB
+echo - public: ~2-3 MB
 echo.
 echo ## Kontak Support:
 echo - JagoanHosting: support@jagoanhosting.com

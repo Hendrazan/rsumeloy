@@ -1,11 +1,29 @@
 # 📤 PANDUAN UPLOAD WEBSITE KE JAGOANHOSTING DENGAN WINSCP
 
+## ⚠️ PENTING - CloudLinux Node.js Selector
+
+**JagoanHosting menggunakan CloudLinux dengan Node.js Selector!**
+
+### ❌ LARANGAN:
+- **JANGAN upload folder `node_modules/`!**
+- CloudLinux membuat `node_modules` sebagai **symlink otomatis**
+- Upload node_modules akan **error**!
+
+### ✅ SOLUSI:
+- Folder `production/` sudah disiapkan **TANPA node_modules**
+- CloudLinux akan otomatis install dependencies dari `package.json`
+- node_modules dibuat sebagai symlink ke virtual environment
+
+**Dokumentasi lengkap:** Lihat `PANDUAN_CLOUDLINUX_NODEJS.md`
+
+---
+
 ## 📊 Status Folder Produksi
 
 ✅ **Folder produksi sudah siap!**
 - Lokasi: `d:\AI DEV\BACKUP\rsumeloy\production`
-- Ukuran: **~26-30 MB** (sudah optimized!)
-- Semua file yang dibutuhkan sudah lengkap
+- Ukuran: **8.99 MB** (CloudLinux compatible!)
+- ✅ **TANPA node_modules** (akan dibuat otomatis oleh CloudLinux)
 
 ---
 
@@ -110,12 +128,14 @@ rsumeloy\production\
 │                               │
 ├── .next/          ────────►   ├── .next/
 ├── public/         ────────►   ├── public/
-├── node_modules/   ────────►   ├── node_modules/
 ├── app/            ────────►   ├── app/
 ├── data/           ────────►   ├── data/
-├── package.json    ────────►   ├── package.json
+├── package.json    ────────►   ├── package.json ⭐
 ├── server.js       ────────►   ├── server.js
 └── .env.local      ────────►   └── .env.local (WAJIB!)
+
+❌ node_modules/  (JANGAN DIUPLOAD!)
+✅ node_modules akan dibuat otomatis oleh CloudLinux!
 ```
 
 **Langkah Upload:**
@@ -142,8 +162,8 @@ rsumeloy\production\
 
 6. **Tunggu proses upload:**
    - Progress bar akan muncul
-   - Estimasi waktu: **5-15 menit** (tergantung koneksi internet)
-   - Total ukuran: ~26-30 MB
+   - Estimasi waktu: **5-10 menit** (tergantung koneksi internet)
+   - Total ukuran: **8.99 MB** (sangat cepat!)
 
 ---
 
@@ -161,12 +181,13 @@ Di panel KANAN (Server), pastikan ada folder/file:
 ├── public/
 │   ├── manifest.json  ✓ Ada?
 │   └── ...
-├── node_modules/      ✓ Ada? (folder besar)
 ├── app/               ✓ Ada?
 ├── data/              ✓ Ada?
-├── package.json       ✓ Ada?
+├── package.json       ✓ Ada? (PENTING!)
 ├── server.js          ✓ Ada?
 └── .env.local         ✓ Ada? (PENTING!)
+
+❌ node_modules/       JANGAN ADA! (akan dibuat oleh CloudLinux)
 ```
 
 **CHECKLIST FINAL:**
@@ -174,50 +195,83 @@ Di panel KANAN (Server), pastikan ada folder/file:
 - [ ] ✓ Folder `.next/` ada dan lengkap
 - [ ] ✓ Folder `.next/static/` ada (bukan kosong)
 - [ ] ✓ Folder `public/` ada
-- [ ] ✓ Folder `node_modules/` ada (40-60 MB)
+- [ ] ✓ Folder `app/` ada
+- [ ] ✓ Folder `data/` ada
 - [ ] ✓ File `server.js` ada
-- [ ] ✓ File `package.json` ada
-- [ ] ✓ File `.env.local` ada dan SUDAH DIISI!
+- [ ] ✓ File `package.json` ada ⭐
+- [ ] ✓ File `.env.local` ada dan SUDAH DIISI! ⭐
+- [ ] ❌ **TIDAK ADA** folder `node_modules/` fisik!
 
 ---
 
-### STEP 6: Setup Server di JagoanHosting
+### STEP 6: Setup CloudLinux Node.js Selector (WAJIB!)
 
-**A. Via cPanel Terminal (Recommended):**
+**⚠️ PENTING:** JagoanHosting menggunakan CloudLinux Node.js Selector!
 
-1. Login ke **cPanel JagoanHosting**
-2. Cari menu: **Terminal** atau **SSH Access**
-3. Jalankan command:
+**Langkah Setup:**
 
-```bash
-cd public_html
-node --version   # Cek versi Node.js (harus 18.x atau 20.x)
-npm --version    # Cek versi npm
+1. **Login ke cPanel JagoanHosting**
+
+2. **Cari menu: "Setup Node.js App" atau "Node.js Selector"**
+
+3. **Klik: Create Application**
+
+4. **Isi form dengan teliti:**
+
+```
+┌─────────────────────────────────────────────┐
+│ Node.js version:   18.x (atau 20.x)        │
+│ Application mode:  Production               │
+│ Application root:  public_html              │
+│ Application URL:   https://rsumeloy.co.id   │
+│ Startup file:      server.js                │
+│ Environment vars:  (skip - ada di .env.local) │
+└─────────────────────────────────────────────┘
 ```
 
-4. **Jalankan aplikasi:**
+5. **Klik: Create**
 
-```bash
-# Opsi 1: Langsung jalankan
-node server.js
+6. **CloudLinux akan otomatis:**
+   - ✓ Membaca `package.json`
+   - ✓ Membuat virtual environment
+   - ✓ Menjalankan `npm install --production`
+   - ✓ Download semua dependencies
+   - ✓ Membuat **symlink** `node_modules` → virtual_env
+   - ✓ Setup environment
 
-# Opsi 2: Menggunakan PM2 (recommended untuk production)
-npm install -g pm2
-pm2 start server.js --name rsumeloy
-pm2 save
-pm2 startup
+7. **Tunggu proses selesai (5-10 menit)**
+   - Status akan berubah: Installing → Running
+
+8. **Klik: Start / Restart**
+
+**Verifikasi:**
 ```
-
-**B. Via File Manager cPanel:**
-
-1. Login ke **cPanel**
-2. **File Manager** → `public_html`
-3. Klik kanan `server.js` → **Edit**
-4. Save (tidak perlu edit, hanya cek)
+Status: Running ✓
+Node.js: 18.x ✓
+Symlink: node_modules → /home/username/nodevenv/... ✓
+```
 
 ---
 
-### STEP 7: Setup Domain di JagoanHosting
+### STEP 7: Verifikasi node_modules Symlink
+
+**Di cPanel File Manager:**
+
+1. Browse ke: `/public_html/`
+2. Lihat folder `node_modules`
+3. **PASTIKAN:** Ada icon symlink (➔ atau link symbol)
+4. Klik kanan → Properties → Harus tertulis "Symbolic Link"
+
+**❌ Jika `node_modules` adalah folder biasa:**
+```
+1. DELETE folder node_modules
+2. Node.js Selector → Restart Application
+3. Sistem akan buat ulang sebagai symlink
+```
+
+---
+
+### STEP 8: Setup Domain (Jika diperlukan)
 
 **Jika domain sudah pointing:**
 
@@ -225,16 +279,11 @@ pm2 startup
 2. Menu: **Domains** atau **Addon Domains**
 3. Set document root ke: `/public_html`
 
-**Setup Node.js Application:**
+**Setup Node.js Application (sudah dilakukan di STEP 6):**
 
-1. Di cPanel, cari: **Setup Node.js App** (atau **Node.js Selector**)
-2. Create Application:
-   - Node.js version: **18.x** atau **20.x**
-   - Application mode: **Production**
-   - Application root: `public_html`
-   - Application URL: `https://rsumeloy.co.id`
-   - Application startup file: `server.js`
-3. Klik **Create**
+1. Di cPanel, cari: **Setup Node.js App**
+2. Create Application (sudah selesai)
+3. Application URL: `https://rsumeloy.co.id`
 
 **Atau via .htaccess (jika JagoanHosting support):**
 

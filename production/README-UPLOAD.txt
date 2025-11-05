@@ -15,6 +15,11 @@
    - GEMINI_API_KEY
    - SESSION_SECRET
 
+## PENTING - CloudLinux Node.js Selector:
+
+JagoanHosting menggunakan CloudLinux dengan Node.js Selector.
+node_modules TIDAK diupload! Akan dibuat otomatis sebagai symlink.
+
 ## Struktur Upload dengan WinSCP:
 
 Upload SEMUA isi folder 'production' ke ROOT public_html:
@@ -24,10 +29,11 @@ public_html/
   │   ├── server/           (dari standalone)
   │   └── static/           (dari .next/static)
   ├── public/               (folder public)
-  ├── node_modules/         (dari standalone - minimal)
-  ├── package.json          (dari standalone)
+  ├── package.json          (WAJIB - untuk install dependencies)
   ├── server.js             (dari standalone)
   └── .env.local            (WAJIB isi dulu!)
+
+CATATAN: node_modules TIDAK diupload (akan dibuat otomatis)
 
 ## Cara Upload dengan WinSCP FTP:
 
@@ -41,18 +47,27 @@ public_html/
 7. Koneksi dan masuk ke folder public_html
 8. Upload SEMUA isi folder 'production' ke public_html
 
-## Setelah Upload:
+## Setelah Upload - Setup di cPanel:
 
-1. Pastikan file .env.local sudah ada dan terisi
-2. Set permission server.js: 755
-3. Jalankan: node server.js
-4. Atau setup PM2: pm2 start server.js --name rsumeloy
+1. Login ke cPanel JagoanHosting
+2. Cari menu: Setup Node.js App
+3. Create Application:
+   - Node.js version: 18.x atau 20.x
+   - Application mode: Production
+   - Application root: public_html
+   - Application startup file: server.js
+4. Klik Create
+5. Sistem akan otomatis:
+   - Membuat symlink node_modules
+   - Menjalankan npm install
+   - Setup virtual environment
+6. Klik Start/Restart
 
 ## Ukuran Upload:
-- Total: ~60-90 MB
-- node_modules: ~40-60 MB (minimal, bukan 400-800 MB)
-- .next: ~15-25 MB
-- public: ~5-10 MB
+- Total: ~5-10 MB (SANGAT KECIL!)
+- node_modules: TIDAK DIUPLOAD (dibuat otomatis di server)
+- .next: ~3-5 MB
+- public: ~2-3 MB
 
 ## Kontak Support:
 - JagoanHosting: support@jagoanhosting.com
