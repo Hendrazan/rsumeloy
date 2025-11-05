@@ -4,16 +4,20 @@
 
 ## PENTING - Langkah Sebelum Upload:
 
-1. RENAME FILE:
-   - Ubah .env.local.template menjadi .env.local
-   - Isi semua nilai environment variables dengan data produksi
+🚨 JANGAN UPLOAD .env.local KE HOSTING! 🚨
 
-2. PASTIKAN ENVIRONMENT VARIABLES SUDAH BENAR:
+1. ENVIRONMENT VARIABLES:
+   - JANGAN ubah .env.local.template
+   - JANGAN upload file .env apapun
+   - Environment variables akan diset di cPanel Node.js App
+
+2. ENVIRONMENT VARIABLES YANG PERLU DISET DI CPANEL:
    - NEXT_PUBLIC_SUPABASE_URL
    - NEXT_PUBLIC_SUPABASE_ANON_KEY
    - NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
    - GEMINI_API_KEY
    - SESSION_SECRET
+   - NODE_ENV=production
 
 ## PENTING - CloudLinux Node.js Selector:
 
@@ -22,7 +26,7 @@ node_modules TIDAK diupload! Akan dibuat otomatis sebagai symlink.
 
 ## Struktur Upload dengan WinSCP:
 
-Upload SEMUA isi folder 'production' ke ROOT public_html:
+Upload SEMUA isi folder 'production' ke ROOT public_html KECUALI .env files:
 
 public_html/
   ├── .next/
@@ -31,9 +35,14 @@ public_html/
   ├── public/               (folder public)
   ├── package.json          (WAJIB - untuk install dependencies)
   ├── server.js             (dari standalone)
-  └── .env.local            (WAJIB isi dulu!)
+  ├── app/                  (source files)
+  └── data/                 (JSON data)
 
-CATATAN: node_modules TIDAK diupload (akan dibuat otomatis)
+🚨 JANGAN UPLOAD:
+- .env.local.template
+- .env.local
+- .env apapun
+- node_modules (akan dibuat otomatis)
 
 ## Cara Upload dengan WinSCP FTP:
 
@@ -56,12 +65,23 @@ CATATAN: node_modules TIDAK diupload (akan dibuat otomatis)
    - Application mode: Production
    - Application root: public_html
    - Application startup file: server.js
-4. Klik Create
-5. Sistem akan otomatis:
+
+4. SET ENVIRONMENT VARIABLES di cPanel:
+   - Klik tab "Environment Variables"
+   - Tambahkan satu per satu:
+     * NEXT_PUBLIC_SUPABASE_URL = your_supabase_url
+     * NEXT_PUBLIC_SUPABASE_ANON_KEY = your_anon_key
+     * NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME = your_cloud_name
+     * GEMINI_API_KEY = your_gemini_key
+     * SESSION_SECRET = random_32_char_string
+     * NODE_ENV = production
+
+5. Klik Create
+6. Sistem akan otomatis:
    - Membuat symlink node_modules
    - Menjalankan npm install
    - Setup virtual environment
-6. Klik Start/Restart
+7. Klik Start/Restart
 
 ## Ukuran Upload:
 - Total: ~5-10 MB (SANGAT KECIL!)

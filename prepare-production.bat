@@ -83,35 +83,8 @@ echo }
 echo ✓ package.json dibuat untuk CloudLinux
 echo.
 
-REM Buat file .env.local template untuk produksi
-echo [6/7] Membuat template .env.local...
-(
-echo # ========================================
-echo # ENVIRONMENT VARIABLES - PRODUCTION
-echo # RSU Meloy Sangatta
-echo # ========================================
-echo.
-echo # Supabase Configuration
-echo NEXT_PUBLIC_SUPABASE_URL=your_supabase_url_here
-echo NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key_here
-echo.
-echo # Cloudinary Configuration
-echo NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
-echo.
-echo # Google Gemini AI
-echo GEMINI_API_KEY=your_gemini_api_key_here
-echo.
-echo # Session Secret ^(generate with: openssl rand -base64 32^)
-echo SESSION_SECRET=your_random_session_secret_here
-echo.
-echo # Node Environment
-echo NODE_ENV=production
-) > "production\.env.local.template"
-echo ✓ Template .env.local dibuat
-echo.
-
 REM Buat file README untuk instruksi upload
-echo [7/7] Membuat README instruksi...
+echo [6/6] Membuat README instruksi...
 (
 echo # ========================================
 echo # INSTRUKSI UPLOAD KE JAGOANHOSTING
@@ -192,6 +165,13 @@ echo ========================================
 ) > "production\README-UPLOAD.txt"
 echo ✓ README instruksi dibuat
 echo.
+
+REM Fix import paths dalam production folder
+echo Memperbaiki import paths...
+cd /d "%~dp0production"
+powershell -command "Get-ChildItem -Recurse -Include '*.tsx','*.ts','*.js','*.jsx' | ForEach-Object { $content = Get-Content $_.FullName -Raw; $content = $content -replace '\.\./\.\./hooks/', '../hooks/'; $content = $content -replace '\.\./\.\./lib/', '../lib/'; $content = $content -replace '\.\./\.\./components/', '../components/'; $content = $content -replace '\.\./\.\./contexts/', '../contexts/'; $content = $content -replace '\.\./\.\./types', '../types'; Set-Content $_.FullName $content }"
+cd /d "%~dp0"
+echo ✓ Import paths diperbaiki
 
 REM Tampilkan ringkasan
 echo ========================================

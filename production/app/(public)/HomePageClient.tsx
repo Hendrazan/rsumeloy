@@ -3,18 +3,18 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { useLanguage } from '../../hooks/useContextHooks';
-import { cn, truncateText, getPlainText } from '../../lib/utils';
-import { Button } from '../../components/ui/Button';
-import { Card, CardHeader, CardContent, CardTitle, CardDescription } from '../../components/ui/Card';
-import { Avatar, AvatarFallback } from '../../components/ui/Avatar';
-import SectionHeader from '../../components/layout/SectionHeader';
-import { DoctorIcon, WhatsAppIcon, Heart, MapPin, ArrowLeft, ArrowRight } from '../../components/icons';
-import OptimizedImage from '../../components/ui/OptimizedImage';
-import CardImageSlider from '../../components/ui/CardImageSlider';
-import { Service, Partner, Info, Facility } from '../../types';
+import { useLanguage } from '../hooks/useContextHooks';
+import { cn, truncateText, getPlainText } from '../lib/utils';
+import { Button } from '../components/ui/Button';
+import { Card, CardHeader, CardContent, CardTitle, CardDescription } from '../components/ui/Card';
+import { Avatar, AvatarFallback } from '../components/ui/Avatar';
+import SectionHeader from '../components/layout/SectionHeader';
+import { DoctorIcon, WhatsAppIcon, Heart, MapPin, ArrowLeft, ArrowRight } from '../components/icons';
+import OptimizedImage from '../components/ui/OptimizedImage';
+import CardImageSlider from '../components/ui/CardImageSlider';
+import { Service, Partner, Info, Facility } from '../types';
 import Link from 'next/link';
-import ClientSidePlainText from '../../components/ClientSidePlainText';
+import ClientSidePlainText from '../components/ClientSidePlainText';
 
 interface HomePageClientProps {
     services: Service[];
@@ -416,3 +416,4 @@ const HomePageClient: React.FC<HomePageClientProps> = ({ services, partners, inf
 };
 
 export default HomePageClient;
+

@@ -15,16 +15,24 @@ import DatabaseFixWarning from '../../components/admin/DatabaseFixWarning';
 
 const AdminDashboard: React.FC = () => {
     const router = useRouter();
+    const [activeTab, setActiveTab] = useState<TableName>('doctors');
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [renderError, setRenderError] = useState<string | null>(null);
+    
+    // Always call hooks at the top level
     const { session, loading: authLoading } = useAuth();
     const data = useData();
     const { missingTables } = data;
-    const [activeTab, setActiveTab] = useState<TableName>('doctors');
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     // Redirect to login if not authenticated
     useEffect(() => {
-        if (!authLoading && !session) {
-            router.replace('/admin/login');
+        try {
+            if (!authLoading && !session) {
+                router.replace('/admin/login');
+            }
+        } catch (error) {
+            console.error('Auth redirect error:', error);
+            setRenderError('Gagal melakukan redirect ke login');
         }
     }, [session, authLoading, router]);
 
@@ -39,6 +47,29 @@ const AdminDashboard: React.FC = () => {
             document.removeEventListener('visibilitychange', handleVisibilityChange);
         };
     }, []);
+
+    // Show error if there's a render error
+    if (renderError) {
+        return (
+            <div className="flex h-screen w-full items-center justify-center bg-gray-100">
+                <div className="text-center">
+                    <h1 className="text-2xl font-bold text-red-600 mb-4">
+                        Error Loading Admin Dashboard
+                    </h1>
+                    <p className="text-gray-600 mb-4">{renderError}</p>
+                    <button
+                        onClick={() => {
+                            setRenderError(null);
+                            window.location.reload();
+                        }}
+                        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                    >
+                        Refresh Halaman
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
     // Show loading while checking auth or loading data
     if (authLoading || !session || data.loading) {
