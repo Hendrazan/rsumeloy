@@ -273,7 +273,7 @@ Copyright © 2024 RSU Meloy Sangatta. All rights reserved.
 **RSU Meloy Sangatta:**
 - 🌐 Website: https://rsumeloy.co.id
 - 📧 Email: info@rsumeloy.co.id
-- 📱 WhatsApp: +62 811-549-547
+- 📱 WhatsApp: +62 811-549-5477
 - 📞 Telepon: (0549) 24222 
 
 **JagoanHosting Support:**
