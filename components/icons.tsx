@@ -67,6 +67,7 @@ export const Pilcrow = createIcon(<><path d="M13 4v16"/><path d="M17 4v16"/><pat
 // Social & Sharing Icons
 export const Linkedin = createIcon(<><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></>);
 export const Link2 = createIcon(<><path d="M15 7h2a5 5 0 0 1 0 10h-2m-8 0H5a5 5 0 0 1 0-10h2"/><line x1="8" x2="16" y1="12" y2="12"/></>);
+export const ExternalLink = createIcon(<><path d="M15 3h6v6"/><path d="m10 14 9-9"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></>);
 export const Check = createIcon(<polyline points="20 6 9 17 4 12"/>);
 
 // Download Icons
