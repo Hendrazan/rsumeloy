@@ -1,4 +1,4 @@
-import LoginPage from "@/components/admin/LoginPage";
+import ProductionSafeLoginPage from "@/components/admin/ProductionSafeLoginPage";
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -11,5 +11,5 @@ export const metadata: Metadata = {
 };
 
 export default function AdminLogin() {
-  return <LoginPage />;
+  return <ProductionSafeLoginPage />;
 }

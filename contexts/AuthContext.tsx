@@ -17,8 +17,8 @@ interface AuthProviderProps {
 // --- Supabase Configuration ---
 // These credentials are safe to expose in the browser.
 // Security is handled by Supabase's Row Level Security (RLS).
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseAnonKey) {
     console.error("Supabase URL or Anon Key is missing. Ensure they are set in your environment variables.");
@@ -26,31 +26,57 @@ if (!supabaseUrl || !supabaseAnonKey) {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const router = useRouter();
-    // Use the browser client for client-side operations
-    const supabase = useMemo(() => createBrowserClient<Database>(supabaseUrl, supabaseAnonKey), []);
+    
+    // Safe Supabase client creation
+    const supabase = useMemo(() => {
+        if (!supabaseUrl || !supabaseAnonKey) {
+            console.error("Supabase configuration missing, using fallback");
+            return null;
+        }
+        try {
+            return createBrowserClient<Database>(supabaseUrl, supabaseAnonKey);
+        } catch (error) {
+            console.error("Failed to create Supabase client:", error);
+            return null;
+        }
+    }, []);
     
     const [session, setSession] = useState<Session | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        if (!supabase) {
+            setLoading(false);
+            return;
+        }
+
         const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
             setSession(session);
             setLoading(false);
 
-            // Redirect on auth state change
-            if (_event === 'SIGNED_IN') {
-                router.push('/admin');
-            }
-            if (_event === 'SIGNED_OUT') {
-                router.push('/admin/login');
+            // Safe navigation with error handling
+            try {
+                if (_event === 'SIGNED_IN') {
+                    router.push('/admin');
+                }
+                if (_event === 'SIGNED_OUT') {
+                    router.push('/admin/login');
+                }
+            } catch (error) {
+                console.error('Navigation error:', error);
             }
         });
         
         // Fetch initial session
         const getInitialSession = async () => {
-            const { data } = await supabase.auth.getSession();
-            setSession(data.session);
-            setLoading(false);
+            try {
+                const { data } = await supabase.auth.getSession();
+                setSession(data.session);
+                setLoading(false);
+            } catch (error) {
+                console.error('Failed to get initial session:', error);
+                setLoading(false);
+            }
         };
         getInitialSession();
 
@@ -58,6 +84,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }, [supabase, router]);
 
     const login = useCallback(async (email: string, pass: string) => {
+        if (!supabase) {
+            throw new Error('Supabase client tidak tersedia');
+        }
+        
         try {
             const { error } = await supabase.auth.signInWithPassword({ email, password: pass });
             if (error) throw error;
@@ -69,6 +99,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }, [supabase, router]);
 
     const logout = useCallback(async () => {
+        if (!supabase) {
+            throw new Error('Supabase client tidak tersedia');
+        }
+        
         try {
             const { error } = await supabase.auth.signOut();
             if (error) throw error;
