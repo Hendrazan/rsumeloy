@@ -2,7 +2,7 @@
 import { MetadataRoute } from 'next'
  
 export default function robots(): MetadataRoute.Robots {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.rsumeloy.co.id';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://rsumeloy.co.id';
 
   return {
     rules: [
@@ -11,6 +11,7 @@ export default function robots(): MetadataRoute.Robots {
         allow: '/',
         disallow: [
           '/admin/',
+          '/login/',
           // Note: previously blocked all URLs with query parameters. Relaxed to allow
           // query-parametered pages to be crawled (useful for search, filters, pagination).
           // Keep blocking sensitive paths below.
@@ -26,10 +27,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/'], // Block GPT crawler
       }
     ],
-    sitemap: [
-      `${siteUrl}/sitemap.xml`,
-      `${siteUrl}/image-sitemap.xml`,
-    ],
+    sitemap: `${siteUrl}/sitemap.xml`,
     host: siteUrl,
   }
 }

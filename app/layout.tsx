@@ -93,8 +93,20 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
+    title: 'RSU Meloy - Pelayanan Kesehatan Unggul di Sangatta Utara',
+    description: 'RSU Meloy berkomitmen untuk memberikan pengalaman perawatan kesehatan yang unggul dengan tim profesional, teknologi canggih, dan kenyamanan pasien di Sangatta Utara, Kalimantan Timur.',
     site: '@rsumeloy',
-    images: "https://res.cloudinary.com/ddyqhlilj/image/upload/gedungrsmeloymalam"
+    creator: '@rsumeloy',
+    images: {
+      url: "https://res.cloudinary.com/ddyqhlilj/image/upload/gedungrsmeloymalam",
+      alt: "RSU Meloy - Pelayanan Kesehatan Unggul di Sangatta Utara"
+    }
+  },
+  other: {
+    'theme-color': '#0EA5E9',
+    'mobile-web-app-capable': 'yes',
+    'apple-mobile-web-app-capable': 'yes',
+    'apple-mobile-web-app-status-bar-style': 'default',
   },
   manifest: "/manifest.json"
 };
