@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
-import type { NextWebVitalsMetric } from 'next/app';
 import { Poppins } from 'next/font/google';
 import "./globals.css";
 import { LanguageProvider } from "../contexts/LanguageContext";
 import { AuthProvider } from "../contexts/AuthContext";
 import { cn } from "../lib/utils";
-import { reportWebVitals as reportWebVitalsToAnalytics } from "@/lib/analytics";
 import React from "react";
 import AnalyticsInitializer from "../components/AnalyticsInitializer";
 import StructuredData from '@/components/StructuredData';

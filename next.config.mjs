@@ -1,6 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+<<<<<<< HEAD
   // Output standalone untuk deployment yang lebih mudah
+=======
+  // STANDALONE OUTPUT for production deployment
+>>>>>>> d092fb3 (Fix hydration error and CSS loading issues)
   output: 'standalone',
   
   // Konfigurasi untuk mengizinkan gambar yang dioptimalkan dari domain eksternal

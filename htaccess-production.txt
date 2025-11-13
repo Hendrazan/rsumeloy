@@ -1,0 +1,31 @@
+# Next.js Application - Reverse Proxy Configuration
+# Created for rsumeloy.co.id
+
+# Enable Rewrite Engine
+RewriteEngine On
+
+# Preserve original host header
+RewriteCond %{HTTP:X-Forwarded-Host} ^$
+RewriteCond %{HTTP_HOST} !^$
+RewriteRule .* - [E=HTTP_X_FORWARDED_HOST:%{HTTP_HOST}]
+
+# Exclude cPanel and system directories
+RewriteCond %{REQUEST_URI} !^/\.well-known/ [NC]
+RewriteCond %{REQUEST_URI} !^/cpanel [NC]
+RewriteCond %{REQUEST_URI} !^/cgi-bin [NC]
+RewriteCond %{REQUEST_URI} !^/webmail [NC]
+
+# Proxy WebSocket connections
+RewriteCond %{HTTP:Upgrade} =websocket [NC]
+RewriteRule ^(.*)$ ws://127.0.0.1:3000/$1 [P,L]
+
+# Proxy all other requests to Node.js app on port 3000
+RewriteCond %{HTTP:Upgrade} !=websocket [NC]
+RewriteRule ^(.*)$ http://127.0.0.1:3000/$1 [P,L]
+
+# Enable proxy
+ProxyPreserveHost On
+ProxyPass /.well-known/ !
+ProxyPass /cpanel/ !
+ProxyPass /cgi-bin/ !
+ProxyPass /webmail/ !

@@ -9,7 +9,7 @@ import { Button } from '../../components/ui/Button';
 import { Card, CardHeader, CardContent, CardTitle, CardDescription } from '../../components/ui/Card';
 import { Avatar, AvatarFallback } from '../../components/ui/Avatar';
 import SectionHeader from '../../components/layout/SectionHeader';
-import { DoctorIcon, WhatsAppIcon, Heart, MapPin, ArrowLeft, ArrowRight } from '../../components/icons';
+import { DoctorIcon, WhatsAppIcon, Calendar, MapPin, ArrowLeft, ArrowRight } from '../../components/icons';
 import OptimizedImage from '../../components/ui/OptimizedImage';
 import CardImageSlider from '../../components/ui/CardImageSlider';
 import { Service, Partner, Info, Facility } from '../../types';
@@ -107,10 +107,30 @@ const HomePageClient: React.FC<HomePageClientProps> = ({ services, partners, inf
     ];
 
     const quickAccessItems = [
-        { icon: DoctorIcon, titleKey: 'jadwalDokter', subtitle: 'Temukan spesialis kami', action: () => router.push('/jadwal-dokter') },
-        { icon: WhatsAppIcon, titleKey: 'waDaftar', subtitle: 'Daftar online (APAM)', action: () => window.open('https://apam.rsumeloy.co.id', '_blank') },
-        { icon: Heart, titleKey: 'layanan', subtitle: 'Lihat layanan unggulan', action: () => router.push('/layanan') },
-        { icon: MapPin, titleKey: 'kontak', subtitle: 'Lokasi & informasi', action: () => router.push('/kontak') }
+        { 
+            icon: DoctorIcon, 
+            titleKey: 'jadwalDokter', 
+            subtitle: 'Temukan spesialis kami', 
+            action: () => router.push('/jadwal-dokter') 
+        },
+        { 
+            icon: Calendar, 
+            titleKey: 'waDaftar', 
+            subtitle: 'Daftar online (APAM)', 
+            action: () => window.open('https://apam.rsumeloy.co.id', '_blank') 
+        },
+        { 
+            icon: WhatsAppIcon, 
+            titleKey: 'pendaftaranWA', 
+            subtitle: 'Pasien baru daftar via WA, pasien lama ke APAM', 
+            action: () => window.open('https://wa.me/628115495477?text=Halo%20RSU%20Meloy,%20saya%20ingin%20mendaftar%20sebagai%20pasien%20baru', '_blank') 
+        },
+        { 
+            icon: MapPin, 
+            titleKey: 'kontak', 
+            subtitle: 'Lokasi & informasi', 
+            action: () => router.push('/kontak') 
+        }
     ];
     
     const handleInfoNav = (direction: 'prev' | 'next') => {
@@ -214,7 +234,7 @@ const HomePageClient: React.FC<HomePageClientProps> = ({ services, partners, inf
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
                         {whyUsItems.map((item, index) => (
                             <Card key={index} className="overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-xl flex flex-col">
-                                <CardHeader className="p-0 relative h-56 w-full">
+                                <CardHeader className="p-0 h-56 w-full relative">
                                     <OptimizedImage publicId={item.imagePublicId} alt={t(item.titleKey)} fill style={{objectFit: 'cover'}} />
                                 </CardHeader>
                                 <CardContent className="p-6 flex-1">
@@ -281,7 +301,7 @@ const HomePageClient: React.FC<HomePageClientProps> = ({ services, partners, inf
                                 >
                                     {info.map((item) => (
                                         <div key={item.id} className="flex-none w-full">
-                                            <div className="relative aspect-[16/7] w-full text-white">
+                                            <div className="aspect-[16/7] w-full text-white relative">
                                                 <OptimizedImage publicId={item.image_public_id} alt={item.title} fill className="absolute inset-0 w-full h-full object-cover" style={{objectFit: 'cover'}} />
                                                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
                                                 <div className="relative h-full flex flex-col justify-end p-8 md:p-12">

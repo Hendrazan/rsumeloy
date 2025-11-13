@@ -4,7 +4,6 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import AIWidget from '@/components/layout/AIWidget';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import StructuredData from '@/components/StructuredData';
 
 export default function PublicLayout({
   children,

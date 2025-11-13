@@ -15,6 +15,32 @@ interface Message {
     text: string;
 }
 
+// Helper function to convert URLs in text to clickable links
+const convertTextToLinks = (text: string): React.ReactNode => {
+    // Regex to match URLs (http://, https://, www.)
+    const urlRegex = /(https?:\/\/[^\s]+|www\.[^\s]+)/g;
+    
+    const parts = text.split(urlRegex);
+    
+    return parts.map((part, index) => {
+        if (part.match(urlRegex)) {
+            const href = part.startsWith('www.') ? `https://${part}` : part;
+            return (
+                <a
+                    key={index}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 hover:text-blue-700 underline"
+                >
+                    {part}
+                </a>
+            );
+        }
+        return <span key={index}>{part}</span>;
+    });
+};
+
 interface AIHealthAssistantProps {
     onClose: () => void;
 }
@@ -84,10 +110,10 @@ const AIHealthAssistant: React.FC<AIHealthAssistantProps> = ({ onClose }) => {
                             </Avatar>
                         )}
                         <div className={cn(
-                            "max-w-xs md:max-w-md rounded-lg px-4 py-2 whitespace-pre-wrap shadow-sm", 
+                            "max-w-xs md:max-w-md rounded-lg px-4 py-2 shadow-sm", 
                             msg.sender === 'user' ? 'bg-primary text-primary-foreground rounded-br-none' : 'bg-background text-foreground rounded-bl-none border'
                         )}>
-                            {msg.text}
+                            {msg.sender === 'ai' ? convertTextToLinks(msg.text) : msg.text}
                         </div>
                     </div>
                 ))}

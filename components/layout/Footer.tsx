@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useLanguage } from '../../hooks/useContextHooks';
 import { Button } from '../ui/Button';
@@ -18,6 +18,7 @@ const Footer: React.FC = () => {
 
     const emailAddress = "rsu_meloy@yahoo.co.id";
     const [emailText, setEmailText] = useState(emailAddress);
+    const [canShare, setCanShare] = useState(false);
 
     const handleEmailClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
         navigator.clipboard.writeText(emailAddress);
@@ -26,6 +27,10 @@ const Footer: React.FC = () => {
             setEmailText(emailAddress);
         }, 2000);
     };
+
+    useEffect(() => {
+        setCanShare(typeof navigator !== 'undefined' && 'share' in navigator);
+    }, []);
 
     const contactItems = [
         { id: 'map', href: googleMapsUrl, icon: MapPin, text: "Jl. Yos Sudarso II No.101, Sangatta Utara, Kab. Kutai Timur", target: "_blank" },
@@ -68,7 +73,7 @@ const Footer: React.FC = () => {
                             <Button size="icon" variant="ghost" className="hover:bg-primary-foreground/10" asChild><a href="https://x.com/Rsumeloy" target="_blank" rel="noopener noreferrer" aria-label="Twitter"><TwitterIcon className="h-5 w-5" /></a></Button>
                             <Button size="icon" variant="ghost" className="hover:bg-primary-foreground/10" asChild><a href={apamUrl} target="_blank" rel="noopener noreferrer" aria-label="APAM"><WhatsAppIcon className="h-5 w-5" /></a></Button>
                             <Button size="icon" variant="ghost" className="hover:bg-primary-foreground/10" asChild><a href="https://www.instagram.com/rsumeloy" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><Instagram className="h-5 w-5" /></a></Button>
-                            {typeof window !== 'undefined' && 'share' in navigator && (
+                            {canShare && (
                                 <Button size="icon" variant="ghost" className="hover:bg-primary-foreground/10" onClick={handleShareWebsite} aria-label="Bagikan Website">
                                     <Share2 className="h-5 w-5" />
                                 </Button>

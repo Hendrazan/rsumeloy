@@ -15,7 +15,7 @@ interface LogEntry {
   };
 }
 
-interface ErrorLog extends LogEntry {
+export interface ErrorLog extends LogEntry {
   url?: string;
   user_id?: string;
   component?: string;

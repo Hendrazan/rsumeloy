@@ -1,0 +1,78 @@
+# ==========================================
+# RSU Meloy - Next.js Standalone on CloudLinux
+# Port: 3001
+# ==========================================
+
+# Enable Rewrite Engine
+RewriteEngine On
+
+# ==========================================
+# Exclude cPanel and System Paths
+# ==========================================
+
+# Don't proxy cPanel paths
+RewriteCond %{REQUEST_URI} ^/\.well-known/ [NC,OR]
+RewriteCond %{REQUEST_URI} ^/cpanel [NC,OR]
+RewriteCond %{REQUEST_URI} ^/cgi-bin [NC,OR]
+RewriteCond %{REQUEST_URI} ^/webmail [NC,OR]
+RewriteCond %{REQUEST_URI} ^/WHM [NC]
+RewriteRule ^ - [L]
+
+# ==========================================
+# Force HTTPS (SSL)
+# ==========================================
+
+RewriteCond %{HTTPS} !=on
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+# ==========================================
+# Proxy to Next.js Application (Port 3001)
+# ==========================================
+
+# Proxy all requests to Node.js app
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ http://127.0.0.1:3001/$1 [P,L]
+
+# ==========================================
+# Security Headers
+# ==========================================
+
+<IfModule mod_headers.c>
+    # Prevent clickjacking
+    Header always set X-Frame-Options "SAMEORIGIN"
+    
+    # XSS Protection
+    Header always set X-XSS-Protection "1; mode=block"
+    
+    # Prevent MIME sniffing
+    Header always set X-Content-Type-Options "nosniff"
+    
+    # Referrer Policy
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# ==========================================
+# Compression & Caching
+# ==========================================
+
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json
+</IfModule>
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+</IfModule>
+
+# ==========================================
+# Error Pages
+# ==========================================
+
+ErrorDocument 404 /404
+ErrorDocument 500 /500

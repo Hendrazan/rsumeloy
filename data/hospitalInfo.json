@@ -51,17 +51,27 @@
     "Farmasi",
     "Ruang Operasi",
     "HCU/NICU",
+<<<<<<< HEAD
+=======
+    "Hemodialisis",
+    "Medical Check Up (MCU)",
+>>>>>>> d092fb3 (Fix hydration error and CSS loading issues)
     "Ambulans"
   ],
   "specialists": [
     "Dokter Spesialis Penyakit Dalam",
     "Dokter Spesialis Jantung",
     "Dokter Spesialis Anak",
-    "Dokter Spesialis Bedah",
     "Dokter Spesialis Kandungan",
-    "Dokter Spesialis Saraf",
     "Dokter Spesialis THT",
+    "Dokter Spesialis Gigi",
+    "Dokter Spesialis Orthopedi",
+    "Dokter Rehabilitasi Medik",
+    "Dokter Spesialis Kulit dan Kelamin",
+    "Dokter Spesialis Jantung",
+    "Dokter Spesialis Bedah",
     "Dokter Spesialis Mata",
+<<<<<<< HEAD
     "Dokter Spesialis Gigi",
     "Dokter Spesialis Paru",
     "Dokter Spesialis Orthopedi",
@@ -69,6 +79,11 @@
     "Dokter Rehabilitasi Medik",
     "Dokter Radiologi",
     "Dokter Spesialis Kulit dan Kelamin"
+=======
+    "Dokter Spesialis Paru",
+    "Dokter Spesialis Gizi",
+    "Dokter Radiologi"
+>>>>>>> d092fb3 (Fix hydration error and CSS loading issues)
   ],
   "insurance": [
     "BPJS Kesehatan",
